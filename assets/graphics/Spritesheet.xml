@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with TexturePacker http://www.codeandweb.com/texturepacker-->
+<!-- $TexturePacker:SmartUpdate:5898a98e7d5a0a7d3235960c31a11097:dd2b117d65150132d61cd58cf6672979:a1929a8f749b136480c5b68af6e01cdb$ -->
+<TextureAtlas imagePath="Spritesheet.png">
+    <SubTexture name="allies_text" x="1258" y="1331" width="252" height="118" frameX="-3" frameY="-1" frameWidth="258" frameHeight="120"/>
+    <SubTexture name="btnBg" x="378" y="1153" width="354" height="569"/>
+    <SubTexture name="btnGames" x="2" y="1036" width="365" height="102"/>
+    <SubTexture name="btnLeaderboard" x="2" y="1140" width="311" height="97"/>
+    <SubTexture name="btnPlay" x="378" y="1036" width="396" height="115"/>
+    <SubTexture name="btnSound1" x="1262" y="915" width="55" height="55" frameX="-5" frameY="-10" frameWidth="75" frameHeight="75"/>
+    <SubTexture name="btnSound2" x="1262" y="767" width="75" height="75"/>
+    <SubTexture name="btn_back" x="1262" y="610" width="115" height="37"/>
+    <SubTexture name="choose_your_faction" x="780" y="533" width="625" height="75"/>
+    <SubTexture name="faction_allies" x="776" y="1095" width="480" height="483"/>
+    <SubTexture name="faction_red" x="1554" y="1084" width="480" height="483"/>
+    <SubTexture name="faction_red_locked" x="780" y="610" width="480" height="483"/>
+    <SubTexture name="faction_title_bg" x="1558" y="2" width="485" height="110"/>
+    <SubTexture name="faction_wider" x="1554" y="599" width="480" height="483"/>
+    <SubTexture name="faction_wider_locked" x="1558" y="114" width="480" height="483"/>
+    <SubTexture name="flag_allies" x="734" y="1580" width="145" height="127"/>
+    <SubTexture name="flag_red" x="1399" y="662" width="145" height="127"/>
+    <SubTexture name="flag_wider" x="1407" y="533" width="145" height="127"/>
+    <SubTexture name="left_arrow" x="1262" y="1054" width="52" height="80"/>
+    <SubTexture name="level_icon" x="1262" y="844" width="68" height="69"/>
+    <SubTexture name="level_lock" x="1358" y="672" width="38" height="47"/>
+    <SubTexture name="level_medal" x="1358" y="649" width="18" height="16"/>
+    <SubTexture name="level_number1" x="1258" y="1136" width="16" height="28" frameX="-12" frameY="-4" frameWidth="44" frameHeight="44"/>
+    <SubTexture name="level_number10" x="2" y="2009" width="32" height="30" frameX="-4" frameY="-3" frameWidth="44" frameHeight="44"/>
+    <SubTexture name="level_number11" x="348" y="2009" width="28" height="28" frameX="-6" frameY="-4" frameWidth="44" frameHeight="44"/>
+    <SubTexture name="level_number12" x="316" y="2009" width="30" height="28" frameX="-5" frameY="-5" frameWidth="44" frameHeight="44"/>
+    <SubTexture name="level_number13" x="284" y="2009" width="30" height="28" frameX="-5" frameY="-5" frameWidth="44" frameHeight="44"/>
+    <SubTexture name="level_number14" x="186" y="2009" width="32" height="28" frameX="-4" frameY="-5" frameWidth="44" frameHeight="44"/>
+    <SubTexture name="level_number15" x="68" y="2009" width="30" height="30" frameX="-4" frameY="-3" frameWidth="44" frameHeight="44"/>
+    <SubTexture name="level_number16" x="152" y="2009" width="32" height="28" frameX="-4" frameY="-5" frameWidth="44" frameHeight="44"/>
+    <SubTexture name="level_number17" x="252" y="2009" width="30" height="28" frameX="-5" frameY="-5" frameWidth="44" frameHeight="44"/>
+    <SubTexture name="level_number18" x="118" y="2009" width="32" height="28" frameX="-4" frameY="-5" frameWidth="44" frameHeight="44"/>
+    <SubTexture name="level_number19" x="1358" y="753" width="32" height="30" frameX="-4" frameY="-3" frameWidth="44" frameHeight="44"/>
+    <SubTexture name="level_number2" x="333" y="1140" width="16" height="28" frameX="-12" frameY="-5" frameWidth="44" frameHeight="44"/>
+    <SubTexture name="level_number20" x="1358" y="721" width="34" height="30" frameX="-3" frameY="-3" frameWidth="44" frameHeight="44"/>
+    <SubTexture name="level_number21" x="220" y="2009" width="30" height="28" frameX="-5" frameY="-5" frameWidth="44" frameHeight="44"/>
+    <SubTexture name="level_number3" x="315" y="1140" width="16" height="28" frameX="-12" frameY="-5" frameWidth="44" frameHeight="44"/>
+    <SubTexture name="level_number4" x="1319" y="945" width="18" height="28" frameX="-11" frameY="-5" frameWidth="44" frameHeight="44"/>
+    <SubTexture name="level_number5" x="100" y="2009" width="16" height="30" frameX="-12" frameY="-3" frameWidth="44" frameHeight="44"/>
+    <SubTexture name="level_number6" x="1319" y="915" width="18" height="28" frameX="-11" frameY="-5" frameWidth="44" frameHeight="44"/>
+    <SubTexture name="level_number7" x="351" y="1140" width="16" height="28" frameX="-12" frameY="-5" frameWidth="44" frameHeight="44"/>
+    <SubTexture name="level_number8" x="1379" y="642" width="18" height="28" frameX="-11" frameY="-5" frameWidth="44" frameHeight="44"/>
+    <SubTexture name="level_number9" x="1379" y="610" width="18" height="30" frameX="-11" frameY="-3" frameWidth="44" frameHeight="44"/>
+    <SubTexture name="location11" x="1023" y="1580" width="222" height="214"/>
+    <SubTexture name="location12" x="1023" y="1796" width="212" height="202" frameX="-5" frameY="-5" frameWidth="222" frameHeight="208"/>
+    <SubTexture name="location13" x="1237" y="1796" width="214" height="200" frameX="-4" frameY="-7" frameWidth="222" frameHeight="208"/>
+    <SubTexture name="location14" x="1339" y="791" width="212" height="202" frameX="-5" frameY="-5" frameWidth="222" frameHeight="208"/>
+    <SubTexture name="location15" x="799" y="1709" width="222" height="214"/>
+    <SubTexture name="location16" x="2" y="1239" width="222" height="214"/>
+    <SubTexture name="location23" x="575" y="1724" width="222" height="214"/>
+    <SubTexture name="location24" x="1258" y="1451" width="222" height="214"/>
+    <SubTexture name="location25" x="351" y="1724" width="222" height="214"/>
+    <SubTexture name="location26" x="1316" y="1115" width="222" height="214"/>
+    <SubTexture name="lock_icon" x="1262" y="649" width="94" height="116" frameX="-60" frameY="-38" frameWidth="222" frameHeight="214"/>
+    <SubTexture name="medal_icon" x="36" y="2009" width="30" height="30" frameX="-1" frameY="0" frameWidth="32" frameHeight="30"/>
+    <SubTexture name="path_allies" x="780" y="2" width="776" height="529" frameX="-153" frameY="-50" frameWidth="970" frameHeight="721"/>
+    <SubTexture name="path_red" x="2" y="533" width="776" height="501" frameX="-154" frameY="-49" frameWidth="970" frameHeight="721"/>
+    <SubTexture name="path_wider" x="2" y="2" width="776" height="529" frameX="-153" frameY="-50" frameWidth="970" frameHeight="721"/>
+    <SubTexture name="red_text" x="799" y="1925" width="218" height="118" frameX="-21" frameY="-1" frameWidth="258" frameHeight="120"/>
+    <SubTexture name="right_arrow" x="1262" y="972" width="54" height="80"/>
+    <SubTexture name="tank" x="2" y="1569" width="347" height="438"/>
+    <SubTexture name="wider_text" x="1318" y="995" width="234" height="118" frameX="-12" frameY="-1" frameWidth="258" frameHeight="120"/>
+</TextureAtlas>
