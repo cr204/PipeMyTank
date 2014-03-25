@@ -4,14 +4,14 @@ package com.pipemytank.gamestates
 	import com.greensock.easing.Expo;
 	import com.pipemytank.assets.FactionIcons;
 	import com.pipemytank.assets.FactionLabelButton;
+	import com.pipemytank.events.NavigationEvent;
 	
 	import starling.display.Button;
 	import starling.display.DisplayObject;
 	import starling.display.Image;
-	import starling.display.Sprite;
 	import starling.events.Event;
 	
-	public class GameState2 extends Sprite
+	public class GameState2 extends GameState
 	{
 		private static var _init:Boolean = false;
 		private var graphItem1:Image;
@@ -24,15 +24,28 @@ package com.pipemytank.gamestates
 		public function GameState2()
 		{
 			super();
+			this.stateID = 2;
 			this.addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 		}
 		
+		public function disposeTemporarily():void {
+			//this.visible = false;
+			if(this.hasEventListener(Event.TRIGGERED)) this.removeEventListener(Event.TRIGGERED, onTriggerHandler);
+		}
+		
+		public function init():void {
+			//this.visible = true;
+		}
+
+		
 		private function onAddedToStage(e:Event):void {
-			trace("gamestate2 screen initialized");
 			if(!_init) drawScreen();
+			
+			this.addEventListener(Event.TRIGGERED, onTriggerHandler);
 		}
 		
 		private function drawScreen():void {
+			trace("gamestate2 drawScreen()");
 			
 			graphItem1 = new Image(Assets.getAtlas().getTexture("choose_your_faction"));
 			graphItem1.x = 202;
@@ -62,19 +75,11 @@ package com.pipemytank.gamestates
 			rightArrow.y = 625;
 			this.addChild(rightArrow);
 			
-			this.addEventListener(Event.TRIGGERED, onTriggerHandler);
+			
 			checkButtons();
 			_init = true;
 		}
 				
-		public function disposeTemporarily():void {
-			this.visible = false;
-			//if(this.hasEventListener(Event.TRIGGERED)) this.removeEventListener(Event.TRIGGERED, onTriggerHandler);
-		}
-		
-		public function init():void {
-			this.visible = true;
-		}
 		
 		private function onTriggerHandler(e:Event):void {
 			var target:DisplayObject = e.target as DisplayObject;
@@ -154,6 +159,10 @@ package com.pipemytank.gamestates
 		
 		private function factionSelected():void {
 			trace("Faction selected!");
+//			var bntClicked:Button = e.target as Button;
+//			if((e.target as Button) == btnPlay) {
+				this.dispatchEvent(new NavigationEvent(NavigationEvent.CHANGE_SCREEN, {id: "factionSelected"}, true));
+//			}
 		}
 		
 	}

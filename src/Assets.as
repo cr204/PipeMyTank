@@ -14,6 +14,9 @@ package
 		[Embed(source="../assets/graphics/bgWelcome.jpg")]
 		public static const BgWelcome:Class;
 		
+		[Embed(source="../assets/graphics/map_bg.png")]
+		public static const BgMap:Class;
+		
 		private static var gameTextures:Dictionary = new Dictionary();
 		private static var gameTextureAtlas:TextureAtlas;
 		

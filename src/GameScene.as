@@ -1,8 +1,12 @@
 package
 {
+	import com.greensock.TweenLite;
+	import com.greensock.easing.Expo;
 	import com.pipemytank.events.NavigationEvent;
+	import com.pipemytank.gamestates.GameState;
 	import com.pipemytank.gamestates.GameState1;
 	import com.pipemytank.gamestates.GameState2;
+	import com.pipemytank.gamestates.GameState3;
 	
 	import starling.display.Button;
 	import starling.display.Image;
@@ -16,6 +20,9 @@ package
 		private var btnBack:Button;
 		private var gameState1:GameState1
 		private var gameState2:GameState2;
+		private var gameState3:GameState3;
+		
+		private var prevStateID:int = 0;
 		
 		public function GameScene()
 		{
@@ -36,14 +43,15 @@ package
 			
 			this.addEventListener(NavigationEvent.CHANGE_SCREEN, onChangeScreen);
 			
-			gameState1 = new GameState1()
-			this.addChild(gameState1);
+			gameState1 = new GameState1();
+			//this.addChild(gameState1);
 			
 			 gameState2 = new GameState2();
-			 gameState2.disposeTemporarily();
-			 this.addChild(gameState2);
+			 //this.addChild(gameState2);
 			 
+			 gameState3 = new GameState3();
 			 
+			 switchGameState(gameState1);
 			 
 			 
 			 btnBack = new Button(Assets.getAtlas().getTexture("btn_back"));
@@ -60,22 +68,156 @@ package
 		{
 			switch(e.params.id) {
 				case "play":
-					gameState1.disposeTemporarily();
+					//gameState1.disposeTemporarily();
 					//this.addChild(gameState2);
-					gameState2.init();
+					//gameState2.init();
+					switchGameState(gameState2);
 					btnBack.visible = true;
 					break;
+				case "factionSelected":
+					switchGameState(gameState3);
+					break;
 				case "back":
-					gameState2.disposeTemporarily();
-					gameState1.init();
-					btnBack.visible = false;
+					switchGameStateBack();
 					break;
 				default:
 					trace("GS.onChangeScreen: default");
 					break;
 			}
 		}
+		
+		private function switchGameStateBack():void {
+			trace("switchGameStateBack.prevStateID: " + prevStateID);
+			switch(prevStateID) {
+				case 1:
+					trace("1");
+					break;
+				case 2:
+					switchGameState(gameState1);
+					btnBack.visible = false;
+					break;
+				case 3:
+					switchGameState(gameState2);
+					break;
+			}
+				
+		}
+		
+		
+		private function switchGameState(gs:GameState) {
+			trace("switchGameState - prevStateID: " + prevStateID + "   gs.stateID: " + gs.stateID);
+			// STATE 1
+			if(gs.stateID==1) {
+				//btnBack.y = 610;
+				//				btnLeaderboard.y = 3;
+				
+				// FROM STATE 0 to STATE 1
+				if(prevStateID==0) {
+					this.addChild(gs);
+					
+				}
+				// FROM STATE 2 to STATE 1
+				if(prevStateID==2) {
+					TweenLite.to(gameState2, .3, {x:400, alpha:0, overwrite:false, ease:Expo.easeOut});
+					//bottomLine.startSliding();
+					//TweenLite.to(bottomLine, .3, {y:565, overwrite:false});
+					gameState2.disposeTemporarily();
+					TweenLite.to(this, 0, {delay:.3, overwrite:false, onComplete:function(){removeChild(gameState2);} });
+					this.addChild(gameState1);
+					gameState1.alpha = 0;
+					gameState1.x = -400;
+					TweenLite.to(gameState1, .6, {x:0, alpha:1, overwrite:false, ease:Expo.easeOut});
+				}
+			}
 			
+			// STATE 2
+			if(gs.stateID==2) {
+				// FROM STATE 1 to STATE 2
+				if(prevStateID==1) {
+					//btnBack.y = 563;
+					//					btnLeaderboard.y = -50;
+					gameState1.disposeTemporarily();
+					TweenLite.to(gameState1, .3, {x:-300, alpha:0, overwrite:false, ease:Expo.easeOut, onComplete:function(){ removeChild(gameState1);} });
+					//bottomLine.stopSliding();
+					//TweenLite.to(bottomLine, .3, {y:600, overwrite:false});
+					this.addChild(gameState2);
+					gameState2.alpha = 0;
+					gameState2.x = 400;
+					TweenLite.to(gameState2, .6, {x:0, alpha:1, overwrite:false, ease:Expo.easeOut});
+				}
+				// FROM STATE 3 to STATE 2
+				if(prevStateID==3) {
+					TweenLite.to(gameState3, .5, {y:-400, alpha:0, overwrite:false, ease:Expo.easeOut, 
+						onComplete:function(){ removeChild(gameState3); }});
+					
+					this.addChild(gameState2);
+					gameState2.alpha = 0;
+					gameState2.y = 400;
+					TweenLite.to(gameState2, .8, {y:0, alpha:1, overwrite:false, ease:Expo.easeOut});
+				}
+				// FROM STATE 5 to STATE 2
+/*				if(prevStateID==5) {
+					trace("switchGameState FROM STATE 5 to STATE 2")
+					TweenLite.to(gameState5, .5, {y:-400, alpha:0, overwrite:false, ease:Exponential.easeOut, 
+						onComplete:function(){ startMenuMusic(); stateHolder.removeChild(gameState5); }});
+					
+					stateHolder.addChild(gameState2);
+					gameState2.alpha = 0;
+					gameState2.y = 400;
+					TweenLite.to(gameState2, .8, {y:0, alpha:1, overwrite:false, ease:Exponential.easeOut, onComplete:unlockNextFaction });
+					btnBack.visible = true;
+					btnBack.y = 563;
+					backgrounds.gotoAndStop(1);
+				}*/
+				
+			}
+			
+			// STATE 3
+			if(gs.stateID==3) {
+				// FROM STATE 2 to STATE 3 
+				if(prevStateID==2) {
+					TweenLite.to(gameState2, .5, {y:400, alpha:0, overwrite:false, ease:Expo.easeOut, 
+						onComplete:function(){removeChild(gameState2); }});
+					//gameState3.openGameState();
+					this.addChild(gameState3);
+					gameState3.alpha = 0;
+					gameState3.y = -400;
+					//gameState3.playIfMapAnimation();
+					TweenLite.to(gameState3, .8, {y:0, alpha:1, overwrite:false, ease:Expo.easeOut});
+				}
+/*				// FROM STATE 4 to STATE 3
+				if(prevStateID==4) {
+					TweenLite.to(gameState4, .5, {y:-400, alpha:0, overwrite:false, ease:Exponential.easeOut, 
+						onComplete:function(){stateHolder.removeChild(gameState4); }});
+					gameState3.openGameState();
+					stateHolder.addChild(gameState3);
+					gameState3.alpha = 0;
+					gameState3.y = 400;
+					gameState3.playIfMapAnimation();
+					TweenLite.to(gameState3, .8, {y:0, alpha:1, overwrite:false, ease:Exponential.easeOut});
+					backgrounds.gotoAndStop(1);
+				}
+				if(prevStateID==5) {
+					trace("switchGameState FROM STATE 5 to STATE 3")
+					TweenLite.to(gameState5, .5, {y:-400, alpha:0, overwrite:false, ease:Exponential.easeOut, 
+						onComplete:function(){ startMenuMusic(); stateHolder.removeChild(gameState5); }});
+					gameState3.openGameState();
+					stateHolder.addChild(gameState3);
+					btnBack.visible = true;
+					btnBack.y = 563;
+					gameState3.alpha = 0;
+					gameState3.y = 400;
+					gameState3.playIfMapAnimation();
+					TweenLite.to(gameState3, .8, {y:0, alpha:1, overwrite:false, ease:Exponential.easeOut});
+					backgrounds.gotoAndStop(1);
+				}*/
+			}
+			
+			
+			prevStateID = gs.stateID;
+			
+		}
+		
 		private function onBackButtonClicked(e:Event):void {
 			this.dispatchEvent(new NavigationEvent(NavigationEvent.CHANGE_SCREEN, {id: "back"}, true));
 		}

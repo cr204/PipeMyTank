@@ -4,11 +4,11 @@ package com.pipemytank.gamestates
 	
 	import starling.display.Button;
 	import starling.display.Image;
-	import starling.display.Sprite;
 	import starling.events.Event;
 	
-	public class GameState1 extends Sprite
+	public class GameState1 extends GameState
 	{
+		private static var _init:Boolean = false;
 		private var bgMenu:Image;
 		private var tank:Image;
 		private var btnPlay:Button;
@@ -19,24 +19,28 @@ package com.pipemytank.gamestates
 		public function GameState1()
 		{
 			super();
+			this.stateID = 1;
 			this.addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 		}
 		
 		public function disposeTemporarily():void {
-			this.visible = false;
+			//this.visible = false;
+			if(this.hasEventListener(Event.TRIGGERED)) this.removeEventListener(Event.TRIGGERED, onButtonClicked);
 		}
 		
 		public function init():void {
-			this.visible = true;
+			//this.visible = true;
 		}
 		 
 		private function onAddedToStage(e:Event):void {
-			trace("gamestate1 screen initialized");
-			drawScreen();
+			if(!_init) drawScreen();
+			this.addEventListener(Event.TRIGGERED, onButtonClicked);
 		}
 		
 		private function drawScreen():void 
 		{
+			trace("gamestate1 - drawScreen()");
+			
 			tank = new Image(Assets.getAtlas().getTexture("tank"));
 			tank.x = 2;
 			tank.y = 119;
@@ -72,9 +76,7 @@ package com.pipemytank.gamestates
 			btnLeaderboard.height = 135;
 			this.addChild(btnLeaderboard);
 			
-			
-			this.addEventListener(Event.TRIGGERED, onButtonClicked);
-			
+			_init = true;
 		}
 		
 		private function onButtonClicked(e:Event):void
