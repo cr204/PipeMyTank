@@ -17,8 +17,6 @@ package com.pipemytank.assets
 		{
 			super(upState, text, downState);
 			this.scaleWhenDown = 1;
-			this.width = 485;
-			this.height = 110;
 			this.addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 		}
 		
