@@ -13,7 +13,6 @@ package com.pipemytank.gamestates
 		private var mapBg:Image;
 		private var selectedMapIcon:MapIcon;
 		private var selectedFlag:Image;
-		private var levelIcon:LevelIcon;
 		
 		public function GameState4()
 		{
@@ -58,11 +57,23 @@ package com.pipemytank.gamestates
 			this.addChild(selectedMapIcon);
 			selectedMapIcon.useAsImage();
 			
-			levelIcon = new LevelIcon(1);
-			levelIcon.x = 188;
-			levelIcon.y = 344;
-			this.addChild(levelIcon);
-			levelIcon.unlock();
+			var posX:Number = 90;
+			var posY:Number = 344;
+			for(var i:int=1; i<22; ++i) {
+				if(i==8 || i==15) {
+					posX = 90;
+					posY += 98;
+				}
+				var levelIcon:LevelIcon;
+				levelIcon = new LevelIcon(i);
+				posX += 98;
+				levelIcon.x = posX;
+				levelIcon.y = posY;
+				this.addChild(levelIcon);
+				if(i==1) levelIcon.unlock();
+			}
+			
+			
 			
 			
 			

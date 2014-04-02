@@ -14,6 +14,8 @@ package
 	import starling.display.Sprite;
 	import starling.events.Event;
 	
+    import fr.kouma.starling.utils.Stats;
+	
 	public class GameScene extends Sprite
 	{
 		private var bg:Image;
@@ -64,6 +66,8 @@ package
 			btnBack.visible = false;
 			btnBack.addEventListener(Event.TRIGGERED, onBackButtonClicked);
 			this.addChild(btnBack);
+			
+			this.addChild(new Stats());
 		}
 		
 		private function onChangeScreen(e:NavigationEvent):void 
