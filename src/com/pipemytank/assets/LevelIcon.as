@@ -1,28 +1,33 @@
 package com.pipemytank.assets
 {
+	import starling.display.Button;
 	import starling.display.Image;
-	import starling.display.Sprite;
 	import starling.events.Event;
+	import starling.textures.Texture;
 	
-	public class LevelIcon extends Sprite
+	public class LevelIcon extends Button
 	{
 		private var levelNumber:int = 1;
-		private var iconBg:Image;
+//		private var iconBg:Image;
 		private var numberBitmap:Image;
 		private var lockBitmap:Image;
 		
-		public function LevelIcon(_levelNumber:int)
+		public function LevelIcon(upState:Texture, text:String="", downState:Texture=null)
 		{
-			super();
-			levelNumber = _levelNumber;
+			super(upState, text, downState);
+			this.scaleWhenDown = 1;
 			this.addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
+		}
+		
+		public function setLevelNumber(_levelNumber:int):void {
+			levelNumber = _levelNumber;
 		}
 		
 		private function onAddedToStage(e:Event):void {
 			this.removeEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 			
-			iconBg = new Image(Assets.getAtlas().getTexture("level_icon"));
-			this.addChild(iconBg);
+/*			iconBg = new Image(Assets.getAtlas().getTexture("level_icon"));
+			this.addChild(iconBg);*/
 			
 			numberBitmap = new Image(Assets.getAtlas().getTexture("level_number" + levelNumber.toString()));
 			numberBitmap.x = 18;

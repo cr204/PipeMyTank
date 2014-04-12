@@ -12,6 +12,7 @@ package com.pipemytank.gamestates
 		private var _init:Boolean = false;
 		private var mapBg:Image;
 		private var path1:Image;
+		private var selectedFlag:Image;
 		private var path2:Image;
 		private var path3:Image;
 		
@@ -57,6 +58,11 @@ package com.pipemytank.gamestates
 			path1.x = 30;
 			path1.y = 14;
 			this.addChild(path1);
+			
+			selectedFlag = new Image(Assets.getAtlas().getTexture("flag_allies"));
+			selectedFlag.x = 770;
+			selectedFlag.y = 65;
+			this.addChild(selectedFlag);
 			
 			location11 = new MapIcon("location11");
 			location11.x = 126;

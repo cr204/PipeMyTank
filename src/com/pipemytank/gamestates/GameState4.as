@@ -2,6 +2,7 @@ package com.pipemytank.gamestates
 {
 	import com.pipemytank.assets.LevelIcon;
 	import com.pipemytank.assets.MapIcon;
+	import com.pipemytank.events.NavigationEvent;
 	
 	import starling.display.DisplayObject;
 	import starling.display.Image;
@@ -65,7 +66,8 @@ package com.pipemytank.gamestates
 					posY += 98;
 				}
 				var levelIcon:LevelIcon;
-				levelIcon = new LevelIcon(i);
+				levelIcon = new LevelIcon(Assets.getAtlas().getTexture("level_icon"));
+				levelIcon.setLevelNumber(i);
 				posX += 98;
 				levelIcon.x = posX;
 				levelIcon.y = posY;
@@ -84,7 +86,7 @@ package com.pipemytank.gamestates
 		
 		private function onTriggerHandler(e:Event):void {
 			var target:DisplayObject = e.target as DisplayObject;
-			//
+			this.dispatchEvent(new NavigationEvent(NavigationEvent.CHANGE_SCREEN, {id: "levelSelected"}, true));
 		}
 	}
 }

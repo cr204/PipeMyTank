@@ -8,13 +8,14 @@ package
 	import com.pipemytank.gamestates.GameState2;
 	import com.pipemytank.gamestates.GameState3;
 	import com.pipemytank.gamestates.GameState4;
+	import com.pipemytank.gamestates.GameState5;
+	
+	import fr.kouma.starling.utils.Stats;
 	
 	import starling.display.Button;
 	import starling.display.Image;
 	import starling.display.Sprite;
 	import starling.events.Event;
-	
-    import fr.kouma.starling.utils.Stats;
 	
 	public class GameScene extends Sprite
 	{
@@ -26,6 +27,7 @@ package
 		private var gameState2:GameState2;
 		private var gameState3:GameState3;
 		private var gameState4:GameState4;
+		private var gameState5:GameState5;
 		
 		private var prevStateID:int = 0;
 		
@@ -55,6 +57,7 @@ package
 			gameState2 = new GameState2();
 			gameState3 = new GameState3();
 			gameState4 = new GameState4();
+			gameState5 = new GameState5();
 			 
 			switchGameState(gameState1);
 			 
@@ -83,6 +86,10 @@ package
 				case "mapSelected":
 					switchGameState(gameState4);
 					break;
+				case "levelSelected":
+					btnBack.visible = false;
+					switchGameState(gameState5);
+					break;
 				case "back":
 					switchGameStateBack();
 					break;
@@ -93,7 +100,7 @@ package
 		}
 		
 		private function switchGameStateBack():void {
-			trace("switchGameStateBack.prevStateID: " + prevStateID);
+			//trace("switchGameStateBack.prevStateID: " + prevStateID);
 			switch(prevStateID) {
 				case 1:
 					trace("1");
@@ -108,13 +115,17 @@ package
 				case 4:
 					switchGameState(gameState3);
 					break;
+				case 5:
+					switchGameState(gameState4);
+					btnBack.visible = true;
+					break;
 			}
 				
 		}
 		
 		
 		private function switchGameState(gs:GameState) {
-			trace("switchGameState - prevStateID: " + prevStateID + "   gs.stateID: " + gs.stateID);
+			//trace("switchGameState - prevStateID: " + prevStateID + "   gs.stateID: " + gs.stateID);
 			// STATE 1
 			if(gs.stateID==1) {
 				//btnBack.y = 610;
@@ -237,21 +248,35 @@ package
 					gameState4.y = -400;
 					TweenLite.to(gameState4, .6, {y:0, alpha:1, overwrite:false, ease:Expo.easeOut});
 				}
-/*				// FROM STATE 5 to STATE 4
+				// FROM STATE 5 to STATE 4
 				if(prevStateID==5) {
 					stateHolder.addChild(gameState4);
-					gameState4.openGameState();
+					//gameState4.openGameState();
 					gameState4.alpha = 0;
 					gameState4.x = gameState4.y = -75;
 					gameState4.scaleX = gameState4.scaleY = 1.2;
-					gameState4.cacheAsBitmap = true;
+					//gameState4.cacheAsBitmap = true;
 					TweenLite.to(gameState4, .5, {x:0, y:0, scaleX:1, scaleY:1, alpha:1, overwrite:false, ease:Expo.easeOut,
-						onComplete:function(){gameState4.cacheAsBitmap=false; startMenuMusic(); }});
-					gameState5.stopIngameMusic();
+						onComplete:function(){ /* startMenuMusic();  */ }});
+					//gameState5.stopIngameMusic();
 					stateHolder.removeChild(gameState5);
-				}*/
+				}
 			}
 			
+			//STATE 5
+			if(gs.stateID==5) {
+				// FROM STATE 4 to STATE 5
+				if(prevStateID==4) {
+					//btnBack.y = 610;
+					TweenLite.to(gameState4, .7, {x:-75, y:-75, scaleX:1.2, scaleY:1.2, alpha:0, overwrite:false, ease:Expo.easeOut, 
+						onComplete:function(){stateHolder.removeChild(gameState4); }});
+					gameState5.x = gameState5.y = 0;
+					gameState5.alpha=1;
+					//gameState5.init(this);
+					stateHolder.addChildAt(gameState5, 0);
+					//stopMenuMusic();
+				}
+			}
 			
 			prevStateID = gs.stateID;
 			
