@@ -14,7 +14,7 @@ package com.pipemytank.gamestates
 		private var btnPlay:Button;
 		private var btnGames:Button;
 		private var btnLeaderboard:Button;
-		
+		private var btnSound:Button;
 		
 		public function GameState1()
 		{
@@ -75,6 +75,12 @@ package com.pipemytank.gamestates
 			btnLeaderboard.width = 435;
 			btnLeaderboard.height = 135;
 			this.addChild(btnLeaderboard);
+			
+			btnSound = new Button(Assets.getAtlas().getTexture("btnSound1"));
+			btnSound.x = 900;
+			btnSound.y = 617;
+			this.addChild(btnSound);
+			
 			
 			_init = true;
 		}

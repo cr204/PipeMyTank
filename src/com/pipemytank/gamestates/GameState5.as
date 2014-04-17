@@ -87,6 +87,26 @@ package com.pipemytank.gamestates
 			blockHolder.y = 68;
 			this.addChild(blockHolder);
 			
+			var txtBattleOf:Image = new Image(Assets.getAtlas().getTexture("text_battle"));
+			txtBattleOf.x = 260;
+			txtBattleOf.y = 31;
+			this.addChild(txtBattleOf);
+			
+			var txtLocationName:Image = new Image(Assets.getAtlas().getTexture("text_normandy"));
+			txtLocationName.x = 350;
+			txtLocationName.y = 31;
+			this.addChild(txtLocationName);
+			
+			var txtScore:Image = new Image(Assets.getAtlas().getTexture("text_score"));
+			txtScore.x = 526;
+			txtScore.y = 31;
+			this.addChild(txtScore);
+			
+			var txtHScore:Image = new Image(Assets.getAtlas().getTexture("text_highscore"));
+			txtHScore.x = 670;
+			txtHScore.y = 31;
+			this.addChild(txtHScore);
+			
 			createBlocks();
 			
 			_init = true;
@@ -97,8 +117,10 @@ package com.pipemytank.gamestates
 			
 			for(var i:int=0; i<8; ++i) {
 				for(var j:int=0; j<8; ++j) {
-					var block:Block = new Block();
+					var bTypeName:String = getNextBlockType();
+					var block:Block = new Block(Assets.getAtlas().getTexture(bTypeName));
 					block.name = "block" + i.toString() + j.toString();
+					block.type = int(bTypeName.substr(4,1));
 					block.x = j * 84;
 					block.y = i * 84;
 					blockHolder.addChild(block);
@@ -107,10 +129,55 @@ package com.pipemytank.gamestates
 			}
 		}
 		
+		private function getNextBlockType():String {
+			var ret:String = "pipe51_red";
+			
+			var rnd:int = int(Math.random() * 7) + 1;
+			if(rnd==6) rnd=5;
+			if(rnd==7){
+				ret = "pipe7";
+			} else {
+				ret = "pipe" + rnd.toString() + getPipeRandomPosition(rnd) + "_red";
+			}
+			return ret;
+		}
+		
+		private function getPipeRandomPosition(n:int):String {
+			var ret:String = "";
+			var t:int = 0;
+			switch(n) {
+				case 2:
+				case 4:
+					t = int(Math.random() * 2) + 1;
+					break;
+				case 3:
+				case 5:
+					t = int(Math.random() * 4) + 1;
+					break;
+			}
+			if(t>0) ret = t.toString();
+			return ret;
+		}
+		
 		
 		private function onTriggerHandler(e:Event):void {
-			var target:DisplayObject = e.target as DisplayObject;
-			this.dispatchEvent(new NavigationEvent(NavigationEvent.CHANGE_SCREEN, {id: "back"}, true));
+			var target:Button = e.target as Button;
+			//trace("GS5.onTriggarHandler: " + target);
+			
+			switch(target) {
+				case btnPause:
+					this.dispatchEvent(new NavigationEvent(NavigationEvent.CHANGE_SCREEN, {id: "back"}, true));		
+					break;
+				case btnSkip:
+					break;
+				case btnStart:
+					break;
+				default:
+					var tt:Block = target as Block;
+					tt.blockTriggered();
+					break;
+			}
+			
 		}
 		
 	}
