@@ -19,8 +19,11 @@ package com.pipemytank.gamestates
 		private var fuelTank:Image;
 		private var imgArrow:Image;
 		private var imgTank:Image;
+		private var yellowRect:Image;
 		
 		private var blockHolder:Sprite;
+		private var targetBlock:Block;
+		private var currBlock:Block;
 		
 		public function GameState5()
 		{
@@ -87,6 +90,8 @@ package com.pipemytank.gamestates
 			blockHolder.y = 68;
 			this.addChild(blockHolder);
 			
+			yellowRect = new Image(Assets.getAtlas().getTexture("yellow_rect"));
+			
 			var txtBattleOf:Image = new Image(Assets.getAtlas().getTexture("text_battle"));
 			txtBattleOf.x = 260;
 			txtBattleOf.y = 31;
@@ -112,53 +117,72 @@ package com.pipemytank.gamestates
 			_init = true;
 		}
 		
+		// Creating each block and adding to blockHolder. 
+		// We need to use it only for 1st time, for next usage we use resetBlocks()
 		private function createBlocks():void {
-
 			
 			for(var i:int=0; i<8; ++i) {
 				for(var j:int=0; j<8; ++j) {
-					var bTypeName:String = getNextBlockType();
-					var block:Block = new Block(Assets.getAtlas().getTexture(bTypeName));
+					var block:Block = new Block(int(Math.random()*7) + 1);
 					block.name = "block" + i.toString() + j.toString();
-					block.type = int(bTypeName.substr(4,1));
 					block.x = j * 84;
 					block.y = i * 84;
+					block.init(this);
 					blockHolder.addChild(block);
 					
 				}
 			}
 		}
 		
-		private function getNextBlockType():String {
-			var ret:String = "pipe51_red";
+		public function dragBlock(block:Block):void {
+			positionYellowBox(block);
+			blockHolder.addChild(yellowRect);
+			blockHolder.addChild(block);
+			targetBlock = block;
+		}
+		
+		public function positionYellowBox(block:Block):void {
+			var currBlockX:int = Math.floor((block.x - 38) / 84) + 1;
+			if(currBlockX<0) currBlockX=0;
+			if(currBlockX>7) currBlockX=7;
 			
-			var rnd:int = int(Math.random() * 7) + 1;
-			if(rnd==6) rnd=5;
-			if(rnd==7){
-				ret = "pipe7";
-			} else {
-				ret = "pipe" + rnd.toString() + getPipeRandomPosition(rnd) + "_red";
-			}
-			return ret;
+			var currBlockY:int = Math.floor((block.y - 38) / 84) + 1;
+			if(currBlockY<0) currBlockY=0;
+			if(currBlockY>7) currBlockY=7;
+			
+			
+			yellowRect.x = 84 * currBlockX - 2;
+			yellowRect.y = 84 * currBlockY - 2;
+				
+			currBlock = blockHolder.getChildByName("block" + String(currBlockY) + String(currBlockX)) as Block;
+			
+			if(currBlock.hasCover) {
+				yellowRect.visible=false;
+			} else if(currBlock.filled) {
+				yellowRect.visible=false;
+			} else if(currBlock.pipeType==7) {
+				yellowRect.visible=false
+			} else yellowRect.visible=true;
+			
+			
 		}
 		
-		private function getPipeRandomPosition(n:int):String {
-			var ret:String = "";
-			var t:int = 0;
-			switch(n) {
-				case 2:
-				case 4:
-					t = int(Math.random() * 2) + 1;
-					break;
-				case 3:
-				case 5:
-					t = int(Math.random() * 4) + 1;
-					break;
+		public function dropBlock():void {
+			if(yellowRect.visible) {
+				swapPipes();
 			}
-			if(t>0) ret = t.toString();
-			return ret;
+			blockHolder.removeChild(yellowRect);
 		}
 		
+		private function swapPipes():void {
+			var n1:int = currBlock.pipeType;
+			var r1:Number = currBlock.pipeRotationDegree;
+			var n2:int = targetBlock.pipeType;
+			
+			currBlock.swapPipe(n2, targetBlock.pipeRotationDegree);
+			targetBlock.swapPipe(n1, r1);
+			//if(channel2_started) pipeswap_sound.play();
+		}
 		
 		private function onTriggerHandler(e:Event):void {
 			var target:Button = e.target as Button;
@@ -173,12 +197,13 @@ package com.pipemytank.gamestates
 				case btnStart:
 					break;
 				default:
-					var tt:Block = target as Block;
-					tt.blockTriggered();
+					//
 					break;
 			}
 			
 		}
+		
+
 		
 	}
 }
