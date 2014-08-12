@@ -1,6 +1,6 @@
 package com.pipemytank.assets.pipe
 {
-	import com.greensock.TweenLite;
+	import com.pipemytank.assets.PipeMask;
 	import com.pipemytank.events.FlowingBlockEvent;
 	
 	import starling.display.Image;
@@ -9,79 +9,76 @@ package com.pipemytank.assets.pipe
 	public class PipeBase extends Sprite
 	{
 		protected static const QUICK_SPEED:Number = .4;
-		protected static var POS1:String;
-		protected static var POS2:String;
-		protected static var POS3:String;
-		protected static var POS4:String;
-		protected static var pipeType:int = 0;
-		protected var rotatePos:int = 1;
+		protected var POS1:String;
+		protected var POS2:String;
+		protected var POS3:String;
+		protected var POS4:String;
 		protected var _filling:Boolean = false;
 		protected var _filled:Boolean = false;
-		protected var maskerTween:TweenLite;
+		protected var pipeMask:PipeMask;
 		
-		public function PipeBase()
+		public var pipeType:int;
+		public var rotatePos:int = 1;
+		private var pipeBitmap:Image;
+		
+		public function PipeBase(_pipeType:int, _rotPos:int=0)
 		{
 			super();
+			pipeType = _pipeType;
+			rotatePos = _rotPos;
+			
+			pipeBitmap = new Image(Assets.getAtlas().getTexture(getPipeType(pipeType, _rotPos)));
+			pipeBitmap.pivotX = pipeBitmap.width * .5;
+			pipeBitmap.pivotY = pipeBitmap.height * .5;
+			this.addChild(pipeBitmap);
+			
 		}
 		
-		public function get pipePosition():int {
-			return rotatePos;
+		public function returnPipePOS():Array {
+			var retArr:Array = [];
+			retArr.push(POS1);
+			retArr.push(POS2);
+			retArr.push(POS3);
+			retArr.push(POS4);
+			return retArr;	
 		}
 		
-		// This function must overrited bu each PipeType
-		public function checkPipeAvailibility(blockSide:int, pipePosition:int):String {
+		public function checkPipeAvailibility(blockSide:int):String {
 			var ret:String = "notAvailable";
+			var num:int = 0;
+			switch(rotatePos) {
+				case 1:
+					num = int(POS1.substr(blockSide-1, 1));
+					break;
+				case 2:
+					num = int(POS2.substr(blockSide-1, 1));
+					break;
+				case 3:
+					num = int(POS3.substr(blockSide-1, 1));
+					break;
+				case 4:
+					num = int(POS4.substr(blockSide-1, 1));
+					break;
+			}
+			if(num==1) {
+				ret = "available";
+			}
 			if(_filled) ret="filled";
 			if(_filling) ret="filling";
+			
 			return ret;
 		}
 		
-		public function return_Pipe_fuelOut_Side(fuelIn_Side:int, pipePosition:int):Array {
-			var retArr:Array = [];
-			
-			var num:int = 0;
-			switch(pipePosition) {
-				case 1:
-					retArr = checkPipePosition(POS1, fuelIn_Side);
-					break;
-				case 2:
-					retArr = checkPipePosition(POS2, fuelIn_Side);
-					break;
-				case 3:
-					retArr = checkPipePosition(POS3, fuelIn_Side);
-					break;
-				case 4:
-					retArr = checkPipePosition(POS4, fuelIn_Side);
-					break;
-			}
-			
-			return retArr;
+		public function updatePipe(pType:int, rotPos:int=0):void {
+			removeChild(pipeBitmap);
+			pipeBitmap = new Image(Assets.getAtlas().getTexture(getPipeType(pType, rotPos)));
+			pipeBitmap.pivotX = pipeBitmap.width * .5;
+			pipeBitmap.pivotY = pipeBitmap.height * .5;
+			this.addChild(pipeBitmap);
+			rotatePos = rotPos;
 		}
 		
-		private function checkPipePosition(pos:String, m:int):Array {
-			var retArr:Array = [];
-			var n:int = 0;
-			for(var i:int=0; i<pos.length; ++i) {
-				n = int(pos.substr(i, 1));
-				if(n==1) {
-					if(i!=m-1) {
-						retArr.push(i);
-					}
-				}
-			}
-			return retArr;
-		}
-		
-/*		public function rotatePipe():void {
-			if(!_filled) {
-				var cf:int = rotatePos;
-				cf++;
-				if(cf>TOTAL_FRAMES) cf=1;
-				//gotoAndStop(cf);
-			}
-		}*/
-		
-		private function rotatePipe():void {
+		public function rotatePipe():void {
 			++rotatePos;
 			switch(pipeType) {
 				case 2:
@@ -99,46 +96,53 @@ package com.pipemytank.assets.pipe
 			}
 		}
 		
-		private function updatePipeTexture():void{
-			removeChild(pipe);
-			pipe = new Image(Assets.getAtlas().getTexture("pipe" + pipeType.toString() + rotatePos.toString() + "_red"));
-			this.addChild(pipe);
+		public function return_Pipe_fuelOut_Side(fuelIn_Side:int):Array {
+			var retArr:Array = [];
+			
+			var num:int = 0;
+			switch(rotatePos) {
+				case 1:
+					retArr = checkPipePosition(POS1, fuelIn_Side);
+					break;
+				case 2:
+					retArr = checkPipePosition(POS2, fuelIn_Side);
+					break;
+				case 3:
+					retArr = checkPipePosition(POS3, fuelIn_Side);
+					break;
+				case 4:
+					retArr = checkPipePosition(POS4, fuelIn_Side);
+					break;
+			}
+			return retArr;
 		}
 		
-		
+		// Must be overridden by PipeTypeN class!
 		public function startFlowing(fuelIn_Side:int, flowingSpeed:Number):void {
-			// This function must overrited bu each PipeType
+			//
+			trace("PipeBase.startFlowing().fuelIn_Side: " + fuelIn_Side);
 		}
+
 		
-		public function pauseFlowing():void {
-			if(maskerTween) maskerTween.pause();
-		}
-		
-		public function quickFill():void {
-			maskerTween.pause();
-			maskerTween = new TweenLite(0, 0, {delay:QUICK_SPEED, overwrite:false, onComplete:flowCompleted});
-			fuelMask.showMask(QUICK_SPEED);
-		}
-		
-		public function resumeFlowing():void {
-			if(maskerTween) maskerTween.play();
-		}
-		
-		private function flowCompleted():void {
+		protected function flowCompleted():void {
+			trace("flowCompleted!");
 			_filling = false;
 			dispatchEvent(new FlowingBlockEvent(FlowingBlockEvent.COMPLETED, true, true));
 		}
 		
-		public function get filled():Boolean {
-			return _filled;
-		}
+		private function checkPipePosition(pos:String, m:int):Array {
+			var retArr:Array = [];
+			var n:int = 0;
+			for(var i:int=0; i<pos.length; ++i) {
+				n = int(pos.substr(i, 1));
+				if(n==1) {
+					if(i!=m-1) retArr.push(i);
+				}
+			}
+			return retArr;
+		}	
 		
-		public function set quickSpeed(n:Number):void {
-			//QUICK_SPEED = n;
-		}
-		
-		
-		private function getBlockType(n:int, p:int=0):String {
+		private function getPipeType(n:int, p:int=0):String {
 			var ret:String = "pipe51_red";
 			if(n==6) n=5;
 			if(n==7){
@@ -170,6 +174,26 @@ package com.pipemytank.assets.pipe
 			rotatePos = t;
 			if(t>0) ret = t.toString();
 			return ret;
+		}
+		
+		
+		private function updatePipeTexture():void{
+			removeChild(pipeBitmap);
+			pipeBitmap = new Image(Assets.getAtlas().getTexture("pipe" + pipeType.toString() + rotatePos.toString() + "_red"));
+			pipeBitmap.pivotX = pipeBitmap.width * .5;
+			pipeBitmap.pivotY = pipeBitmap.height * .5;
+			this.addChild(pipeBitmap);
+		}
+		
+		
+		protected function initPipeMask():void {
+			pipeMask = new PipeMask(pipeType, rotatePos);
+			this.addChild(pipeMask);
+		}
+		
+		
+		public function get filled():Boolean {
+			return _filled;
 		}
 		
 	}

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with TexturePacker http://www.codeandweb.com/texturepacker-->
+<!-- $TexturePacker:SmartUpdate:6dff4910a247ebae971b5958616a3e28:051512250f31c9a46845906cbc1add32:e7173e5515c1d652a749653c0db931c7$ -->
+<TextureAtlas imagePath="Spritesheet1.png">
+    <SubTexture name="fail_window" x="2" y="939" width="450" height="242"/>
+    <SubTexture name="pause_window" x="2" y="565" width="285" height="372"/>
+    <SubTexture name="victory_window" x="2" y="2" width="452" height="561"/>
+    <SubTexture name="wbtn_continue" x="224" y="1236" width="220" height="51"/>
+    <SubTexture name="wbtn_exit" x="289" y="834" width="81" height="82"/>
+    <SubTexture name="wbtn_exit1" x="2" y="1236" width="220" height="51"/>
+    <SubTexture name="wbtn_mute" x="224" y="1183" width="220" height="51"/>
+    <SubTexture name="wbtn_next_level" x="289" y="750" width="81" height="82"/>
+    <SubTexture name="wbtn_restart" x="2" y="1183" width="220" height="51"/>
+    <SubTexture name="wbtn_retry" x="289" y="661" width="87" height="87"/>
+    <SubTexture name="wmedal" x="289" y="565" width="101" height="94"/>
+</TextureAtlas>

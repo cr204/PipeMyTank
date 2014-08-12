@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with TexturePacker http://www.codeandweb.com/texturepacker-->
-<!-- $TexturePacker:SmartUpdate:8b51a2426cc37a594e46dea084f8158b:9edce112d66e06cf811ea50d762e8881:a1929a8f749b136480c5b68af6e01cdb$ -->
+<!-- $TexturePacker:SmartUpdate:279d3cea686ee3f7473f6d47a45c945e:a5726f79f61fcd1499387ab2290b9eb3:a1929a8f749b136480c5b68af6e01cdb$ -->
 <TextureAtlas imagePath="Spritesheet.png">
     <SubTexture name="allies_text" x="971" y="455" width="252" height="118" frameX="-3" frameY="-1" frameWidth="258" frameHeight="120"/>
     <SubTexture name="arrow_bitmap" x="2016" y="240" width="25" height="39"/>
-    <SubTexture name="block_allies" x="174" y="1654" width="79" height="79"/>
+    <SubTexture name="block_allies" x="1958" y="1155" width="79" height="79"/>
     <SubTexture name="block_redarmy" x="2" y="1618" width="79" height="79"/>
     <SubTexture name="block_wider" x="2" y="1537" width="79" height="79"/>
     <SubTexture name="btnBg" x="484" y="1425" width="354" height="569"/>
@@ -68,33 +68,34 @@
     <SubTexture name="path_allies" x="638" y="2" width="634" height="451" frameX="-154" frameY="-128" frameWidth="970" frameHeight="721"/>
     <SubTexture name="path_red" x="1274" y="2" width="626" height="429" frameX="-153" frameY="-121" frameWidth="970" frameHeight="721"/>
     <SubTexture name="path_wider" x="2" y="2" width="634" height="451" frameX="-153" frameY="-128" frameWidth="970" frameHeight="721"/>
-    <SubTexture name="pipe1_black" x="1218" y="1414" width="76" height="79"/>
-    <SubTexture name="pipe1_red" x="1432" y="1372" width="76" height="79"/>
+    <SubTexture name="pipe1_black" x="1724" y="1331" width="76" height="79"/>
+    <SubTexture name="pipe1_red" x="1296" y="1414" width="76" height="79"/>
     <SubTexture name="pipe21_black" x="2" y="1996" width="79" height="44" frameX="0" frameY="-19" frameWidth="79" frameHeight="82"/>
-    <SubTexture name="pipe21_red" x="1296" y="1493" width="76" height="77" frameX="0" frameY="-1" frameWidth="76" frameHeight="79"/>
-    <SubTexture name="pipe22_black" x="1432" y="1291" width="76" height="79"/>
-    <SubTexture name="pipe22_red" x="1432" y="1210" width="76" height="79"/>
-    <SubTexture name="pipe31_black" x="1374" y="1453" width="76" height="77" frameX="0" frameY="-1" frameWidth="76" frameHeight="79"/>
-    <SubTexture name="pipe31_red" x="1510" y="1446" width="76" height="77" frameX="0" frameY="-1" frameWidth="76" frameHeight="79"/>
-    <SubTexture name="pipe32_black" x="1609" y="1161" width="76" height="79"/>
-    <SubTexture name="pipe32_red" x="1531" y="1161" width="76" height="79"/>
-    <SubTexture name="pipe33_black" x="1958" y="1475" width="76" height="77" frameX="0" frameY="-1" frameWidth="76" frameHeight="79"/>
-    <SubTexture name="pipe33_red" x="1880" y="1410" width="76" height="77" frameX="0" frameY="-1" frameWidth="76" frameHeight="79"/>
-    <SubTexture name="pipe34_black" x="1958" y="1315" width="76" height="79"/>
-    <SubTexture name="pipe34_red" x="255" y="1654" width="78" height="79"/>
-    <SubTexture name="pipe41_black" x="1958" y="1155" width="78" height="77" frameX="0" frameY="0" frameWidth="78" frameHeight="79"/>
+    <SubTexture name="pipe21_red" x="1374" y="1453" width="76" height="77" frameX="0" frameY="-1" frameWidth="76" frameHeight="79"/>
+    <SubTexture name="pipe22_black" x="1218" y="1414" width="76" height="79"/>
+    <SubTexture name="pipe22_red" x="1432" y="1372" width="76" height="79"/>
+    <SubTexture name="pipe31_black" x="1510" y="1446" width="76" height="77" frameX="0" frameY="-1" frameWidth="76" frameHeight="79"/>
+    <SubTexture name="pipe31_red" x="1958" y="1540" width="76" height="77" frameX="0" frameY="-1" frameWidth="76" frameHeight="79"/>
+    <SubTexture name="pipe32_black" x="1432" y="1291" width="76" height="79"/>
+    <SubTexture name="pipe32_red" x="1432" y="1210" width="76" height="79"/>
+    <SubTexture name="pipe33_black" x="1880" y="1489" width="76" height="77" frameX="0" frameY="-1" frameWidth="76" frameHeight="79"/>
+    <SubTexture name="pipe33_red" x="1802" y="1489" width="76" height="77" frameX="0" frameY="-1" frameWidth="76" frameHeight="79"/>
+    <SubTexture name="pipe34_black" x="1609" y="1161" width="76" height="79"/>
+    <SubTexture name="pipe34_red" x="1958" y="1236" width="78" height="79"/>
+    <SubTexture name="pipe41_black" x="1958" y="1317" width="78" height="63" frameX="0" frameY="-8" frameWidth="78" frameHeight="79"/>
     <SubTexture name="pipe41_red" x="1752" y="510" width="78" height="63" frameX="0" frameY="-8" frameWidth="78" frameHeight="79"/>
-    <SubTexture name="pipe42_black" x="1958" y="1234" width="76" height="79"/>
+    <SubTexture name="pipe42_black" x="1531" y="1161" width="76" height="79"/>
     <SubTexture name="pipe42_red" x="1976" y="748" width="61" height="80" frameX="-8" frameY="0" frameWidth="77" frameHeight="80"/>
-    <SubTexture name="pipe51_black" x="1802" y="1410" width="76" height="77" frameX="0" frameY="-1" frameWidth="76" frameHeight="79"/>
-    <SubTexture name="pipe51_red" x="1724" y="1410" width="76" height="77" frameX="0" frameY="-1" frameWidth="76" frameHeight="79"/>
-    <SubTexture name="pipe52_black" x="1958" y="1396" width="76" height="77" frameX="0" frameY="0" frameWidth="76" frameHeight="79"/>
-    <SubTexture name="pipe52_red" x="1880" y="1331" width="76" height="77" frameX="0" frameY="0" frameWidth="76" frameHeight="79"/>
-    <SubTexture name="pipe53_black" x="1802" y="1331" width="76" height="77" frameX="0" frameY="0" frameWidth="76" frameHeight="79"/>
-    <SubTexture name="pipe53_red" x="1724" y="1331" width="76" height="77" frameX="0" frameY="0" frameWidth="76" frameHeight="79"/>
-    <SubTexture name="pipe54_black" x="1296" y="1414" width="76" height="77" frameX="0" frameY="-2" frameWidth="76" frameHeight="79"/>
-    <SubTexture name="pipe54_red" x="1218" y="1495" width="76" height="75" frameX="0" frameY="-4" frameWidth="76" frameHeight="79"/>
+    <SubTexture name="pipe51_black" x="1958" y="1461" width="76" height="77" frameX="0" frameY="-1" frameWidth="76" frameHeight="79"/>
+    <SubTexture name="pipe51_red" x="1880" y="1410" width="76" height="77" frameX="0" frameY="-1" frameWidth="76" frameHeight="79"/>
+    <SubTexture name="pipe52_black" x="1724" y="1412" width="76" height="77" frameX="0" frameY="0" frameWidth="76" frameHeight="79"/>
+    <SubTexture name="pipe52_red" x="1802" y="1410" width="76" height="77" frameX="0" frameY="0" frameWidth="76" frameHeight="79"/>
+    <SubTexture name="pipe53_black" x="1958" y="1382" width="76" height="77" frameX="0" frameY="0" frameWidth="76" frameHeight="79"/>
+    <SubTexture name="pipe53_red" x="1880" y="1331" width="76" height="77" frameX="0" frameY="0" frameWidth="76" frameHeight="79"/>
+    <SubTexture name="pipe54_black" x="1802" y="1331" width="76" height="77" frameX="0" frameY="-2" frameWidth="76" frameHeight="79"/>
+    <SubTexture name="pipe54_red" x="1588" y="1446" width="76" height="75" frameX="0" frameY="-4" frameWidth="76" frameHeight="79"/>
     <SubTexture name="pipe7" x="2" y="1699" width="79" height="71" frameX="0" frameY="-8" frameWidth="79" frameHeight="79"/>
+    <SubTexture name="pipe_mask" x="260" y="1654" width="80" height="83"/>
     <SubTexture name="red_text" x="966" y="1007" width="218" height="118" frameX="-21" frameY="-1" frameWidth="258" frameHeight="120"/>
     <SubTexture name="right_arrow" x="1988" y="629" width="54" height="80"/>
     <SubTexture name="tank" x="840" y="1425" width="347" height="438"/>
@@ -115,4 +116,5 @@
     <SubTexture name="text_stalingrad" x="1901" y="450" width="104" height="21"/>
     <SubTexture name="text_tunisa" x="1832" y="510" width="66" height="21"/>
     <SubTexture name="wider_text" x="1752" y="577" width="234" height="118" frameX="-12" frameY="-1" frameWidth="258" frameHeight="120"/>
+    <SubTexture name="yellow_rect" x="174" y="1654" width="84" height="84"/>
 </TextureAtlas>

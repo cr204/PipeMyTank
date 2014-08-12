@@ -58,7 +58,9 @@ package
 			gameState3 = new GameState3();
 			gameState4 = new GameState4();
 			gameState5 = new GameState5();
-			 
+			gameState5.init(this);
+			
+			
 			switchGameState(gameState1);
 			 
 			btnBack = new Button(Assets.getAtlas().getTexture("btn_back"));
@@ -70,7 +72,7 @@ package
 			btnBack.addEventListener(Event.TRIGGERED, onBackButtonClicked);
 			this.addChild(btnBack);
 			
-			this.addChild(new Stats());
+			//this.addChild(new Stats());
 		}
 		
 		private function onChangeScreen(e:NavigationEvent):void 

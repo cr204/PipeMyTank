@@ -1,48 +1,56 @@
 package com.pipemytank.assets.pipe
 {
+	import com.greensock.TweenLite;
+
 	public class PipeType2 extends PipeBase
 	{
-		public function PipeType2()
+		private var maskerTween:TweenLite;
+		
+		public function PipeType2(n:int, p:int)
 		{
-			super();
-			pipeType = 2;
+			super(n, p);
+			
 			POS1 = "1010";
 			POS2 = "0101";
 			POS3 = "1010";
 			POS4 = "0101";
-			
 		}
 		
-		override public function checkPipeAvailibility(blockSide:int, pipePosition:int):String {
-			var ret:String = "notAvailable";
-			var res:Boolean = false;
-			var num:int = 0;
-			switch(pipePosition) {
+		override public function startFlowing(fuelIn_Side:int, flowingSpeed:Number):void {
+			super.initPipeMask();
+			
+			_filling = true;
+			var _doIt:Boolean = false;
+			
+			switch(rotatePos) {
 				case 1:
-					num = int(POS1.substr(blockSide-1, 1));
+					if(fuelIn_Side==1) {
+						pipeMask.createMask(-80, 0);
+						_doIt = true;
+					}
+					if(fuelIn_Side==3) {
+						pipeMask.createMask(80, 0);
+						_doIt = true;
+					}
 					break;
 				case 2:
-					num = int(POS2.substr(blockSide-1, 1));
-					break;
-				case 3:
-					num = int(POS3.substr(blockSide-1, 1));
-					break;
-				case 4:
-					num = int(POS4.substr(blockSide-1, 1));
+					if(fuelIn_Side==2) {
+						pipeMask.createMask(0, -80);
+						_doIt = true;
+					}
+					if(fuelIn_Side==4) {
+						pipeMask.createMask(0, 80);
+						_doIt = true;
+					}
 					break;
 			}
-			if(num==1) {
-				res = true;
-				ret = "available";
+			if(_doIt) {
+				_filled = true;
+				maskerTween = new TweenLite(0, 0, {delay:flowingSpeed, overwrite:false, onComplete:flowCompleted});
+				pipeMask.showMask(flowingSpeed);
 			}
-			if(_filled) ret="filled";
-			if(_filling) ret="filling";
-			
-			return ret;
 		}
-		
-		
-		
+
 		
 		
 	}
