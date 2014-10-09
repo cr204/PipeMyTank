@@ -12,10 +12,15 @@ package
 	
 	import fr.kouma.starling.utils.Stats;
 	
+	import starling.core.Starling;
 	import starling.display.Button;
 	import starling.display.Image;
 	import starling.display.Sprite;
 	import starling.events.Event;
+	import starling.textures.Texture;
+	import starling.utils.AssetManager;
+	
+	import com.pipemytank.utils.ProgressBar;
 	
 	public class GameScene extends Sprite
 	{
@@ -31,13 +36,53 @@ package
 		
 		private var prevStateID:int = 0;
 		
+		private var mLoadingProgress:ProgressBar;
+		private static var sAssets:AssetManager;
+		
 		public function GameScene()
 		{
-			super();
-			this.addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
+			// nothing to do here -- Startup will call "start" immediately.
 		}
 		
-		private function onAddedToStage(e:Event):void {
+		//public function start(background:Texture, assets:AssetManager):void
+		public function start(assets:AssetManager):void
+		{
+			sAssets = assets;
+			
+			// The background is passed into this method for two reasons:
+			// 
+			// 1) we need it right away, otherwise we have an empty frame
+			// 2) the Startup class can decide on the right image, depending on the device.
+			
+			//addChild(new Image(background));
+			
+			// The AssetManager contains all the raw asset data, but has not created the textures
+			// yet. This takes some time (the assets might be loaded from disk or even via the
+			// network), during which we display a progress indicator. 
+			
+			mLoadingProgress = new ProgressBar(175, 20);
+			mLoadingProgress.x = 200; //(background.width  - mLoadingProgress.width) / 2;
+			mLoadingProgress.y = 200; //background.height * 0.7;
+			addChild(mLoadingProgress);
+			
+			assets.loadQueue(function(ratio:Number):void
+			{
+				mLoadingProgress.ratio = ratio;
+				// a progress bar should always show the 100% for a while,
+				// so we show the main menu only after a short delay. 
+				
+				if (ratio == 1)
+					Starling.juggler.delayCall(function():void
+					{
+						mLoadingProgress.removeFromParent(true);
+						mLoadingProgress = null;
+						showWelcomeScreen();
+					}, 0.15);
+			});
+		}
+		
+		
+		private function showWelcomeScreen():void {
 			trace("starling framework initialized!");
 			
 /*			splashScreen = new Image(Assets.getTexture("splashScreen"));
@@ -287,6 +332,8 @@ package
 		private function onBackButtonClicked(e:Event):void {
 			this.dispatchEvent(new NavigationEvent(NavigationEvent.CHANGE_SCREEN, {id: "back"}, true));
 		}
+		
+		public static function get assets():AssetManager { return sAssets; }
 		
 	}
 }

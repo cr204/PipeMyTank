@@ -25,41 +25,41 @@ package com.pipemytank.assets.pipe
 			switch(rotatePos) {
 				case 1:
 					if(fuelIn_Side==1) {
-						pipeMask.createMask(-125, 0);
+						pipeMask.createMask(-80, 0);
 						_doIt = true;
 					}
 					if(fuelIn_Side==4) {
-						pipeMask.createMask(0, 125);
+						pipeMask.createMask(0, 80);
 						_doIt = true;
 					}
 					break;
 				case 2:
 					if(fuelIn_Side==1) {
-						pipeMask.createMask(-125, 0);
+						pipeMask.createMask(-80, 0);
 						_doIt = true;
 					}
 					if(fuelIn_Side==2) {
-						pipeMask.createMask(0, -125);
+						pipeMask.createMask(0, -80);
 						_doIt = true;
 					}
 					break;
 				case 3:
 					if(fuelIn_Side==2) {
-						pipeMask.createMask(0, -125);
+						pipeMask.createMask(0, -80);
 						_doIt = true;
 					}
 					if(fuelIn_Side==3) {
-						pipeMask.createMask(125, 0);
+						pipeMask.createMask(80, 0);
 						_doIt = true;
 					}
 					break;
 				case 4:
 					if(fuelIn_Side==3) {
-						pipeMask.createMask(125, 0);
+						pipeMask.createMask(80, 0);
 						_doIt = true;
 					}
 					if(fuelIn_Side==4) {
-						pipeMask.createMask(0, 125);
+						pipeMask.createMask(0, 80);
 						_doIt = true;
 					}
 					break;

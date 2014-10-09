@@ -5,6 +5,7 @@ package com.pipemytank.gamestates
 	import starling.display.Button;
 	import starling.display.Image;
 	import starling.events.Event;
+	import starling.utils.AssetManager;
 	
 	public class GameState1 extends GameState
 	{
@@ -41,42 +42,48 @@ package com.pipemytank.gamestates
 		{
 			trace("gamestate1 - drawScreen()");
 			
-			tank = new Image(Assets.getAtlas().getTexture("tank"));
+			//tank = new Image(Assets.getAtlas().getTexture("tank"));
+			tank = new Image(GameScene.assets.getTexture("tank"));
 			tank.x = 2;
 			tank.y = 119;
-			tank.width = 465;
-			tank.height = 589;
+			//tank.width = 465;
+			//tank.height = 589;
 			this.addChild(tank);
 			
-			bgMenu = new Image(Assets.getAtlas().getTexture("btnBg"));
+			//bgMenu = new Image(Assets.getAtlas().getTexture("btnBg"));
+			bgMenu = new Image(GameScene.assets.getTexture("btnBg"));
 			bgMenu.x = 486;
 			bgMenu.y = 12;
 			bgMenu.width = 474;
 			bgMenu.height = 762;
 			this.addChild(bgMenu);
 			
-			btnPlay = new Button(Assets.getAtlas().getTexture("btnPlay"));
+			//btnPlay = new Button(Assets.getAtlas().getTexture("btnPlay"));
+			btnPlay = new Button(GameScene.assets.getTexture("btnPlay"));
 			btnPlay.x = 476;
 			btnPlay.y = 181;
 			btnPlay.width = 532;
 			btnPlay.height = 155;
 			this.addChild(btnPlay);
 			
-			btnGames = new Button(Assets.getAtlas().getTexture("btnGames"));
+			//btnGames = new Button(Assets.getAtlas().getTexture("btnGames"));
+			btnGames = new Button(GameScene.assets.getTexture("btnGames"));
 			btnGames.x = 477;
 			btnGames.y = 340;
 			btnGames.width = 486;
 			btnGames.height = 137;
 			this.addChild(btnGames);
 			
-			btnLeaderboard = new Button(Assets.getAtlas().getTexture("btnLeaderboard"));
+			//btnLeaderboard = new Button(Assets.getAtlas().getTexture("btnLeaderboard"));
+			btnLeaderboard = new Button(GameScene.assets.getTexture("btnLeaderboard"));
 			btnLeaderboard.x = 530;
 			btnLeaderboard.y = 490;
 			btnLeaderboard.width = 435;
 			btnLeaderboard.height = 135;
 			this.addChild(btnLeaderboard);
 			
-			btnSound = new Button(Assets.getAtlas().getTexture("btnSound1"));
+			//btnSound = new Button(Assets.getAtlas().getTexture("btnSound1"));
+			btnSound = new Button(GameScene.assets.getTexture("btnSound1"));
 			btnSound.x = 900;
 			btnSound.y = 617;
 			this.addChild(btnSound);

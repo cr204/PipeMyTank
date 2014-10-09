@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="dust_effect.png">
+	<!-- Created with Adobe Flash Professional version 14.0.0.110 -->
+	<!-- http://www.adobe.com/products/flash.html -->
+	<SubTexture name="dust_effect0000" x="0" y="0" width="78" height="94" pivotX="78.9" pivotY="91.95" frameX="-41" frameY="-40" frameWidth="151" frameHeight="166"/>
+	<SubTexture name="dust_effect0001" x="78" y="0" width="99" height="117" frameX="-29" frameY="-27" frameWidth="151" frameHeight="166"/>
+	<SubTexture name="dust_effect0002" x="177" y="0" width="120" height="136" frameX="-17" frameY="-17" frameWidth="151" frameHeight="166"/>
+	<SubTexture name="dust_effect0003" x="297" y="0" width="137" height="153" frameX="-8" frameY="-7" frameWidth="151" frameHeight="166"/>
+	<SubTexture name="dust_effect0004" x="0" y="153" width="151" height="166"/>
+</TextureAtlas>

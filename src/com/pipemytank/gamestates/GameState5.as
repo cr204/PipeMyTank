@@ -1,7 +1,11 @@
 package com.pipemytank.gamestates
 {
+	import com.greensock.TweenLite;
 	import com.pipemytank.assets.Block;
+	import com.pipemytank.assets.CustomTextField;
+	import com.pipemytank.assets.ScoreAnimation;
 	import com.pipemytank.assets.WaitingTank;
+	import com.pipemytank.assets.windows.WindowVictory;
 	import com.pipemytank.events.FlowingBlockEvent;
 	import com.pipemytank.events.NavigationEvent;
 	
@@ -15,6 +19,8 @@ package com.pipemytank.gamestates
 		private var flowingSpeed:Number = 4;
 		private var parentObj:GameScene;
 		
+		public var USER_SCORE:Number;
+		
 		private var _init:Boolean = false;
 		private var bgCell:Image;
 		private var btnPause:Button;
@@ -27,6 +33,8 @@ package com.pipemytank.gamestates
 		private var yellowRect:Image;
 		
 		private var blockHolder:Sprite;
+		private var scoreHolder:Sprite;
+		private var windowHolder:Sprite;
 		private var targetBlock:Block;
 		private var currBlock:Block;
 		private var flowingBlock:Block;
@@ -40,6 +48,10 @@ package com.pipemytank.gamestates
 		private var _unfilledPipes:int = 0;
 		private var _fillingBlocks:int = 1;
 		private var _tankMoved:Boolean = false;
+		
+		private var dynTxtScore:CustomTextField;
+		private var dynTxtHighScore:CustomTextField;
+		
 		
 		public function GameState5()
 		{
@@ -56,6 +68,7 @@ package com.pipemytank.gamestates
 		
 		public function init(pObj:GameScene):void {
 			parentObj = pObj;
+			USER_SCORE = 0;
 			flowingBlocksArr = new Array();
 			flowingBlockName="block00";
 			_fillingBlocks = 1;
@@ -69,28 +82,29 @@ package com.pipemytank.gamestates
 		
 		private function drawScreen():void {
 			
-			bgCell = new Image(Assets.getTexture("BgCell"));
+			//bgCell = new Image(Assets.getTexture("BgCell"));
+			bgCell = new Image(GameScene.assets.getTexture("cell_bg"));
 			bgCell.x = 27;
 			bgCell.y = 15;
 			this.addChild(bgCell);
 			
-			btnPause = new Button(Assets.getAtlas().getTexture("btn_pause"));
+			btnPause = new Button(GameScene.assets.getTexture("btn_pause"));
 			btnPause.x = 942;
 			btnPause.y = 17;
 			this.addChild(btnPause);
 			
-			btnStart = new Button(Assets.getAtlas().getTexture("btn_start"));
+			btnStart = new Button(GameScene.assets.getTexture("btn_start"));
 			btnStart.x = 30;
 			btnStart.y = 17;
 			this.addChild(btnStart);
 			
-			btnSkip = new Button(Assets.getAtlas().getTexture("btn_skip"));
+			btnSkip = new Button(GameScene.assets.getTexture("btn_skip"));
 			btnSkip.x = 931;
 			btnSkip.y = 23;
 			btnSkip.visible = false;
 			this.addChild(btnSkip);
 			
-			fuelTank = new Image(Assets.getAtlas().getTexture("fuel_tank"));
+			fuelTank = new Image(GameScene.assets.getTexture("fuel_tank"));
 			fuelTank.x = 29;
 			fuelTank.y = 69;
 			this.addChild(fuelTank);
@@ -105,7 +119,7 @@ package com.pipemytank.gamestates
 			imgTank.y = 654;
 			this.addChild(imgTank);*/
 			
-			imgArrow = new Image(Assets.getAtlas().getTexture("arrow_bitmap"));
+			imgArrow = new Image(GameScene.assets.getTexture("arrow_bitmap"));
 			imgArrow.x = 854;
 			imgArrow.y = 675;
 			this.addChild(imgArrow);
@@ -115,27 +129,48 @@ package com.pipemytank.gamestates
 			blockHolder.y = 68;
 			this.addChild(blockHolder);
 			
-			yellowRect = new Image(Assets.getAtlas().getTexture("yellow_rect"));
+			scoreHolder = new Sprite();
+			scoreHolder.x = 0;
+			scoreHolder.y = 0;
+			this.addChild(scoreHolder);
 			
-			var txtBattleOf:Image = new Image(Assets.getAtlas().getTexture("text_battle"));
+			
+			yellowRect = new Image(GameScene.assets.getTexture("yellow_rect"));
+			
+			var txtBattleOf:Image = new Image(GameScene.assets.getTexture("text_battle"));
 			txtBattleOf.x = 260;
 			txtBattleOf.y = 31;
 			this.addChild(txtBattleOf);
 			
-			var txtLocationName:Image = new Image(Assets.getAtlas().getTexture("text_normandy"));
+			var txtLocationName:Image = new Image(GameScene.assets.getTexture("text_normandy"));
 			txtLocationName.x = 350;
 			txtLocationName.y = 31;
 			this.addChild(txtLocationName);
 			
-			var txtScore:Image = new Image(Assets.getAtlas().getTexture("text_score"));
+			var txtScore:Image = new Image(GameScene.assets.getTexture("text_score"));
 			txtScore.x = 526;
 			txtScore.y = 31;
 			this.addChild(txtScore);
 			
-			var txtHScore:Image = new Image(Assets.getAtlas().getTexture("text_highscore"));
-			txtHScore.x = 670;
+			dynTxtScore = new CustomTextField();
+			dynTxtScore.x = 586;
+			dynTxtScore.y = 31;
+			this.addChild(dynTxtScore);
+			
+			var txtHScore:Image = new Image(GameScene.assets.getTexture("text_highscore"));
+			txtHScore.x = 665;
 			txtHScore.y = 31;
 			this.addChild(txtHScore);
+			
+			dynTxtHighScore = new CustomTextField();
+			dynTxtHighScore.x = 764;
+			dynTxtHighScore.y = 31;
+			this.addChild(dynTxtHighScore);
+			
+			windowHolder = new Sprite();
+			windowHolder.x = 0;
+			windowHolder.y = 0;
+			this.addChild(windowHolder);
 			
 			createBlocks();
 			
@@ -147,7 +182,8 @@ package com.pipemytank.gamestates
 		private function createBlocks():void {
 			for(var i:int=0; i<8; ++i) {
 				for(var j:int=0; j<8; ++j) {
-					var block:Block = new Block(int(Math.random()*5) + 1);
+					//var block:Block = new Block(int(Math.random()*5) + 1);
+					var block:Block = new Block(1 + int(Math.random()*4) + 1);  // Currently pipeType1 is not created.
 					//var block:Block = new Block(4);
 					block.name = "block" + i.toString() + j.toString();
 					block.x = j * 84;
@@ -215,7 +251,8 @@ package com.pipemytank.gamestates
 			
 			switch(target) {
 				case btnPause:
-					this.dispatchEvent(new NavigationEvent(NavigationEvent.CHANGE_SCREEN, {id: "back"}, true));		
+					//this.dispatchEvent(new NavigationEvent(NavigationEvent.CHANGE_SCREEN, {id: "back"}, true));
+					showVictoryScreen();
 					break;
 				case btnSkip:
 					break;
@@ -283,7 +320,7 @@ package com.pipemytank.gamestates
 			target.blockFilled = true;
 			if(target.hasEventListener(FlowingBlockEvent.COMPLETED)) target.removeEventListener(FlowingBlockEvent.COMPLETED, flowCompleteHandler);
 			
-//			createScoreAnimation(target.x, target.y);
+			createScoreAnimation100(target.x, target.y);
 			
 			var fuelOutPos:Array = target.cellFuelOutPositions;
 			_fillingBlocks += fuelOutPos.length;
@@ -302,13 +339,82 @@ package com.pipemytank.gamestates
 		private function levelFinished():void {
 			trace("levelFinished!");
 			tank1.fillTank(flowingSpeed);
-/*			pauseGame();
+//			pauseGame();
 			minusUnfilledPipes();
-			channel.stop();*/
+//			channel.stop();
 		}
 		
+		private function minusUnfilledPipes():void {
+			_unfilledPipes = 0;
+			
+			for(var i:int=0; i<8; i++) {
+				for(var j:int=0; j<8; j++) {
+					var tempBlock = blockHolder.getChildByName("block" + i.toString() + j.toString());
+					if(!tempBlock.hasCover && !tempBlock.filled && tempBlock.pipeType<6) {
+						createScoreAnimation10(tempBlock, _unfilledPipes);
+						++_unfilledPipes;
+					}
+				}
+			}
+			
+			TweenLite.to(this, 0, {delay:_unfilledPipes*.1+.5, overwrite:false, onComplete:function(){showVictoryScreen(); } });
+		}
 		
+		public function showVictoryScreen():void {
+			var windowVictory:WindowVictory = new WindowVictory();
+//			stopIngameMusic(); 
+//			if(Settings.getInstance().sound) channel1 = victory_sound.play(1, 99);
+			windowHolder.addChild(windowVictory);
+//			windowVictory.levelNumbers.setNumbers(levelNumbers.getNumbers);
+//			windowVictory.setOldScore(mainStage.USER_SCORE);
+			windowVictory.setScore(USER_SCORE);
+			windowVictory.tanksRefuelled(1);
+			windowVictory.showStars(countStars());
+//			mainStage.USER_SCORE = USER_SCORE;
+			
+/*			if(mainStage.selectedLevelName=="level21") {
+				var playAnimation:Boolean = false;
+				
+				windowVictory.blockNextLevel();
+				
+				var n1:int = int(mainStage.selectedFactionName.slice(7)) - 1;
+				var n2:int = int(mainStage.selectedLocationName.slice(8));
+				playAnimation = ScoreManager.getInstance().unblockMap(n1, n2);
+				trace("playAnimation: " + playAnimation);
+				if(playAnimation) mainStage.playMapAnimation(n2);
+			} else {
+				unlockNextLevel();
+			}*/
+			
+		}
 		
+		public function createScoreAnimation100(xPos:Number, yPos:Number):void {
+			var scAnimation:ScoreAnimation = new ScoreAnimation(100);
+			//scAnimation.setSound(channel2_started);
+			scAnimation.x = xPos + blockHolder.x;
+			scAnimation.y = yPos + blockHolder.y;
+			scoreHolder.addChild(scAnimation);
+			scAnimation.playAnimation();
+			addToUserScore(100);
+		}
+		
+		public function createScoreAnimation10(bl:Block, n:int=0):void {
+			var scAnimation:ScoreAnimation = new ScoreAnimation(-10);
+			scAnimation.x = bl.x + blockHolder.x;
+			scAnimation.y = bl.y + blockHolder.y;
+			TweenLite.to(this, 0, {delay:.1*n, overwrite:false, onComplete:function(){
+				scoreHolder.addChild(scAnimation);
+//				scAnimation.setSound(channel2_started);
+				scAnimation.playAnimation();
+				bl.visible = false; 
+				addToUserScore(-10);
+			}});
+		}
+		
+		private function addToUserScore(n:Number):void {
+			USER_SCORE += n;
+			dynTxtScore.setText(USER_SCORE.toString());
+		}
 		
 		
 
@@ -382,7 +488,15 @@ package com.pipemytank.gamestates
 		}
 		
 		
-		
+		private function countStars():int {
+			var ret:int = 3;
+			var perc:Number = _filledPipes / (_filledPipes + _unfilledPipes);
+			
+			if(perc<0.67) ret = 2;
+			if(perc<0.34) ret = 1;
+			if(perc<0.11) ret = 0;
+			return ret;
+		}
 		
 		
 		

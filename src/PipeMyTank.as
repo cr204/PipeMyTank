@@ -1,23 +1,37 @@
 package
 {
+	import flash.desktop.NativeApplication;
 	import flash.display.Bitmap;
-//	import flash.display.Loader;
 	import flash.display.MovieClip;
 	import flash.display.StageAlign;
 	import flash.display.StageScaleMode;
 	import flash.events.Event;
-	import flash.events.ProgressEvent;
-	import flash.utils.getDefinitionByName;
+	import flash.filesystem.File;
+	import flash.geom.Rectangle;
+	import flash.system.Capabilities;
+	
+	import starling.core.Starling;
+	import starling.events.Event;
+	import starling.textures.Texture;
+	import starling.utils.AssetManager;
+	import starling.utils.RectangleUtil;
+	import starling.utils.ScaleMode;
+	import starling.utils.formatString;
 	
 	[SWF(width="1024", height="768", frameRate="60", backgroundColor="#000000")]
 	public class PipeMyTank extends MovieClip
-	{
-		private static const PROGRESS_BAR_HEIGHT:Number = 20;
-		private var _starling:Object;
-		//private var loader:Loader;
+	{	
+		private var directPath:String = "/Users/jasur/Documents/Adobe Flash Builder 4.7/PipeMyTank/";
 		
-		[Embed(source="../assets/graphics/preloader.png", mimeType="image/png")]
-		private var MyImage:Class;
+		// Startup image for SD screens
+		[Embed(source="../system/startup.jpg")]
+		private static var Background:Class;
+		
+		// Startup image for HD screens
+		[Embed(source="../system/startupHD.jpg")]
+		private static var BackgroundHD:Class;
+		
+		private var mStarling:Starling;
 		
 		var preloader:Bitmap;
 		
@@ -26,58 +40,114 @@ package
 			stage.align = StageAlign.TOP_LEFT;
 			stage.scaleMode = StageScaleMode.NO_SCALE;
 			
-			preloader = new MyImage();
-			preloader.x = 465;
-			preloader.y = 345;
-			this.addChild(preloader);
+			// set general properties
 			
-			this.stop();
+			var stageWidth:int  = 1024;
+			var stageHeight:int = 768;
+			var iOS:Boolean = Capabilities.manufacturer.indexOf("iOS") != -1;
 			
-
-/*			loader = new Loader();
-			loader.contentLoaderInfo.addEventListener(Event.COMPLETE, onCompleteHandler);
-			loader.load(new URLRequest("preloader.swf"));*/
+			Starling.multitouchEnabled = true;  // useful on mobile devices
+			Starling.handleLostContext = !iOS;  // not necessary on iOS. Saves a lot of memory!
 			
-			//the two most important events for preloading
-			this.loaderInfo.addEventListener(ProgressEvent.PROGRESS, loaderInfo_progressHandler);
-			this.loaderInfo.addEventListener(Event.COMPLETE, loaderInfo_completeHandler);
-		}
-		
-/*		private function onCompleteHandler(e:Event):void {
-			trace("onCompleteHandler");
-			loader.x = 380;
-			loader.y = 250;
-			this.addChild(loader);
-		}*/
-		
-		private function loaderInfo_progressHandler(event:ProgressEvent):void
-		{
-			//this example draws a basic progress bar
-			this.graphics.clear();
-			this.graphics.beginFill(0xcccccc);
-			this.graphics.drawRect(0, (this.stage.stageHeight - PROGRESS_BAR_HEIGHT) / 2,
-				this.stage.stageWidth * event.bytesLoaded / event.bytesTotal, PROGRESS_BAR_HEIGHT);
-			this.graphics.endFill();
-		}
-		
-		private function loaderInfo_completeHandler(event:Event):void
-		{
-			//get rid of the progress bar
-			this.graphics.clear();
+			// create a suitable viewport for the screen size
+			// 
+			// we develop the game in a *fixed* coordinate system of 320x480; the game might 
+			// then run on a device with a different resolution; for that case, we zoom the 
+			// viewPort to the optimal size for any display and load the optimal textures.
 			
-			this.removeChild(preloader);
-			//loader = null;
+			var viewPort:Rectangle = RectangleUtil.fit(
+				new Rectangle(0, 0, stageWidth, stageHeight), 
+				new Rectangle(0, 0, stage.fullScreenWidth, stage.fullScreenHeight), 
+				ScaleMode.SHOW_ALL, iOS);
 			
-			//go to frame two because that's where the classes we need are located
-			this.gotoAndStop("two");
+			// create the AssetManager, which handles all required assets for this resolution
 			
-			//getDefinitionByName() will let us access the classes without importing
-			const StarlingType:Class = getDefinitionByName("starling.core.Starling") as Class;
-			const MainType:Class = getDefinitionByName("GameScene") as Class;
-			this._starling = new StarlingType(MainType, this.stage);
-			this._starling.start();
+			var scaleFactor:int = viewPort.width < 1025 ? 1 : 2; // midway between 1024 and 2048
+			var appDir:File = File.applicationDirectory;
+			appDir = appDir.resolvePath(directPath); // Temporary solution! Need to work.
+			trace("appDir: " + appDir.url);
 			
-			//that's it!
+/*			var directory:File = File.applicationDirectory;
+			trace("0.nativePath: " + directory.nativePath);
+			directory = directory.resolvePath("/Users/jasur/Documents/Adobe Flash Builder 4.7/PipeMyTank/assets");
+			trace("1.nativePath: " + directory.nativePath);
+			var contents:Array = directory.getDirectoryListing();  
+			for (var i:uint = 0; i < contents.length; i++)  
+			{ 
+				trace(i + ". " + contents[i].name);  
+			}  */ 
+			
+			
+			
+			/* appDir = appDir.resolvePath("assets/graphics");
+			var contents:Array = appDir.getDirectoryListing();  
+			for (var i:uint = 0; i < contents.length; i++)  
+			{ 
+				trace(i + ". " + contents[i].name);  
+			}  */
+			
+			
+			var assets:AssetManager = new AssetManager(scaleFactor);
+			assets.verbose = Capabilities.isDebugger;
+			assets.enqueue(
+				appDir.resolvePath("assets/sounds"),
+				appDir.resolvePath(formatString("assets/animations/{0}x", scaleFactor)),
+				appDir.resolvePath(formatString("assets/fonts/{0}x", scaleFactor)),
+				appDir.resolvePath(formatString("assets/graphics/{0}x", scaleFactor))
+			);
+			
+			// While Stage3D is initializing, the screen will be blank. To avoid any flickering, 
+			// we display a startup image now and remove it below, when Starling is ready to go.
+			// This is especially useful on iOS, where "Default.png" (or a variant) is displayed
+			// during Startup. You can create an absolute seamless startup that way.
+			// 
+			// These are the only embedded graphics in this app. We can't load them from disk,
+			// because that can only be done asynchronously - i.e. flickering would return.
+			// 
+			// Note that we cannot embed "Default.png" (or its siblings), because any embedded
+			// files will vanish from the application package, and those are picked up by the OS!
+			
+			var backgroundClass:Class = scaleFactor == 1 ? Background : BackgroundHD;
+			var background:Bitmap = new backgroundClass();
+			Background = BackgroundHD = null; // no longer needed!
+			
+			background.x = viewPort.x;
+			background.y = viewPort.y;
+			background.width  = viewPort.width;
+			background.height = viewPort.height;
+			background.smoothing = true;
+			addChild(background);
+			
+			// launch Starling
+			
+			mStarling = new Starling(GameScene, stage, viewPort);
+			mStarling.stage.stageWidth  = stageWidth;  // <- same size on all devices!
+			mStarling.stage.stageHeight = stageHeight; // <- same size on all devices!
+			mStarling.simulateMultitouch  = false;
+			mStarling.enableErrorChecking = false;
+			
+			mStarling.addEventListener(starling.events.Event.ROOT_CREATED, function():void
+			{
+				removeChild(background);
+				background = null;
+				
+				var game:GameScene = mStarling.root as GameScene;
+				//var bgTexture:Texture = Texture.fromTexture(backgroundClass);
+				//var bgTexture:Texture = Texture.fromEmbeddedAsset(backgroundClass, false, false, scaleFactor); 
+				//game.start(bgTexture, assets);
+				game.start(assets);
+				mStarling.start();
+			});
+			
+			// When the game becomes inactive, we pause Starling; otherwise, the enter frame event
+			// would report a very long 'passedTime' when the app is reactivated. 
+			
+			NativeApplication.nativeApplication.addEventListener(
+				flash.events.Event.ACTIVATE, function (e:*):void { mStarling.start(); });
+			
+			NativeApplication.nativeApplication.addEventListener(
+				flash.events.Event.DEACTIVATE, function (e:*):void { mStarling.stop(); });
+			
 		}
 		
 	}
