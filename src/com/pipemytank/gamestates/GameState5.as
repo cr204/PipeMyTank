@@ -5,6 +5,9 @@ package com.pipemytank.gamestates
 	import com.pipemytank.assets.CustomTextField;
 	import com.pipemytank.assets.ScoreAnimation;
 	import com.pipemytank.assets.WaitingTank;
+	import com.pipemytank.assets.windows.WindowBase;
+	import com.pipemytank.assets.windows.WindowFault;
+	import com.pipemytank.assets.windows.WindowPause;
 	import com.pipemytank.assets.windows.WindowVictory;
 	import com.pipemytank.events.FlowingBlockEvent;
 	import com.pipemytank.events.NavigationEvent;
@@ -34,11 +37,15 @@ package com.pipemytank.gamestates
 		
 		private var blockHolder:Sprite;
 		private var scoreHolder:Sprite;
-		private var windowHolder:Sprite;
 		private var targetBlock:Block;
 		private var currBlock:Block;
 		private var flowingBlock:Block;
 		private var flowingBlockName:String;
+		
+		private var windowHolder:Sprite;
+		private var windowFault:WindowFault;
+		private var windowPause:WindowPause;
+		private var windowVictory:WindowVictory;
 		
 		public var _gameOver:Boolean = false;
 		
@@ -72,7 +79,10 @@ package com.pipemytank.gamestates
 			flowingBlocksArr = new Array();
 			flowingBlockName="block00";
 			_fillingBlocks = 1;
-			
+		}
+		
+		public function returnPrevGameState():void {
+			this.dispatchEvent(new NavigationEvent(NavigationEvent.CHANGE_SCREEN, {id: "back"}, true));	
 		}
 		
 		private function onAddedToStage(e:Event):void {
@@ -174,6 +184,8 @@ package com.pipemytank.gamestates
 			
 			createBlocks();
 			
+			initWindows();
+			
 			_init = true;
 		}
 		
@@ -251,8 +263,7 @@ package com.pipemytank.gamestates
 			
 			switch(target) {
 				case btnPause:
-					//this.dispatchEvent(new NavigationEvent(NavigationEvent.CHANGE_SCREEN, {id: "back"}, true));
-					showVictoryScreen();
+					showPauseWindow();
 					break;
 				case btnSkip:
 					break;
@@ -265,6 +276,7 @@ package com.pipemytank.gamestates
 			}
 			
 		}
+		
 		
 		private function startFlowing(bName:String, bSide:int):void {
 			//var currBlock:Block = blockHolder.getChildByName("block00") as Block;
@@ -304,9 +316,8 @@ package com.pipemytank.gamestates
 /*				channel.stop();
 				pauseGame();
 				stopIngameMusic();
-				screenAnimation.gotoAndPlay("animation3");
-				windowFault.levelNumbers.setNumbers(levelNumbers.getNumbers);
-				TweenLite.to(this, 0, {delay:1.5, overwrite:false, onComplete:function(){windowHolder.addChild(windowFault); }});*/
+				screenAnimation.gotoAndPlay("animation3");  */
+				showFaultWindow();
 			}
 			
 		}
@@ -360,8 +371,43 @@ package com.pipemytank.gamestates
 			TweenLite.to(this, 0, {delay:_unfilledPipes*.1+.5, overwrite:false, onComplete:function(){showVictoryScreen(); } });
 		}
 		
+
+		// ****************************
+		// PopUp Window manager methods
+		// ****************************
+		
+		private function initWindows():void {
+			windowPause = new WindowPause();
+			windowPause.init(this);
+			
+			windowFault = new WindowFault();
+			windowFault.init(this);
+			
+			windowVictory = new WindowVictory();
+			windowVictory.init(this);
+		}
+		
+		public function removeCurrentWindow():void {
+			//channel1.stop();
+			if(windowHolder.numChildren>0) {
+				var currWindow:WindowBase = windowHolder.getChildAt(0) as WindowBase;
+				currWindow.disposeTemporarily();
+				windowHolder.removeChild(currWindow);
+			}
+		}
+		
+		private function showFaultWindow():void {
+			windowHolder.addChild(windowFault);
+			//windowFault.levelNumbers.setNumbers(levelNumbers.getNumbers);
+			//TweenLite.to(this, 0, {delay:1.5, overwrite:false, onComplete:function(){windowHolder.addChild(windowFault); }});
+		}
+		
+		private function showPauseWindow():void {
+			windowHolder.addChild(windowPause);
+			//showFaultWindow();
+		}
+		
 		public function showVictoryScreen():void {
-			var windowVictory:WindowVictory = new WindowVictory();
 //			stopIngameMusic(); 
 //			if(Settings.getInstance().sound) channel1 = victory_sound.play(1, 99);
 			windowHolder.addChild(windowVictory);
@@ -387,6 +433,9 @@ package com.pipemytank.gamestates
 			}*/
 			
 		}
+		// ****************************
+		// ****************************
+		
 		
 		public function createScoreAnimation100(xPos:Number, yPos:Number):void {
 			var scAnimation:ScoreAnimation = new ScoreAnimation(100);

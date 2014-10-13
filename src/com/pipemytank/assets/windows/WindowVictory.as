@@ -21,28 +21,15 @@ package com.pipemytank.assets.windows
 		
 		public function WindowVictory()
 		{
-			this.addEventListener(Event.ADDED_TO_STAGE, onAdded);
+			super();
 		}
 		
-		private function onAdded(e:Event):void {
-			
-			var q:starling.display.Quad = new Quad(1024, 768); 
-			q.setVertexColor(0, 0x000000);
-			q.setVertexColor(1, 0x000000);
-			q.setVertexColor(2, 0x000000);
-			q.setVertexColor(3, 0x000000);
-			q.alpha = .75;
-			addChild (q);
-			
-			
+		override protected function drawWindow():void {
 			var bgWindow:Image = new Image(GameScene.assets.getTexture("victory_window"));
 			bgWindow.x = 286;
 			bgWindow.y = 103;
 			this.addChild(bgWindow);
 			
-			
-			//var scoreTxt:CustomTextField = new CustomTextField();
-			//scoreTxt.setColor(0xE59419);
 			scoreTxt.setFontSize(40);
 			scoreTxt.setWidth(150);
 			scoreTxt.setHeight(45);
@@ -76,23 +63,41 @@ package com.pipemytank.assets.windows
 			
 			
 			btnExit = new Button(GameScene.assets.getTexture("wbtn_exit"));
+			btnExit.name = "btnExit";
 			btnExit.x = 348;
 			btnExit.y = 566;
 			this.addChild(btnExit);
 			
 			btnReplay = new Button(GameScene.assets.getTexture("wbtn_retry"));
+			btnReplay.name = "btnReplay";
 			btnReplay.x = 472;
 			btnReplay.y = 562;
 			this.addChild(btnReplay);
 			
 			btnNextLevel = new Button(GameScene.assets.getTexture("wbtn_next_level"));
+			btnNextLevel.name = "btnNextLevel";
 			btnNextLevel.x = 601;
 			btnNextLevel.y = 566;
 			this.addChild(btnNextLevel);
-
-			setMedals(3);
 			
+			setMedals(3);
 		}
+		
+		override protected function onTriggerHandler(e:Event):void {
+			var targetBtn:Button = e.target as Button;
+			trace(targetBtn.name);
+			switch(targetBtn.name) {
+				case "btnExit":
+					break;
+				case "btnReplay":
+					break;
+				case "btnNextLevel":
+					break;
+			}
+		}
+		
+		
+		
 		
 		private function setMedals(n:int):void {
 			var medalIcon:Image = new Image(GameScene.assets.getTexture("wmedal"));
