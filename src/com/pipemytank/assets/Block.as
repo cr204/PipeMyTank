@@ -142,6 +142,20 @@ package com.pipemytank.assets
 			}
 		}
 		
+		public function pauseGame():void {
+			pipe.pauseFlowing();
+		}
+		
+		public function resumeGame():void {
+			pipe.resumeFlowing();
+		}
+		
+		public function quickFill():void {
+			if(!blockFilled) pipe.quickFill();
+		}
+		
+		
+		
 		private function onTouch(event:TouchEvent):void
 		{
 			var touch:Touch = event.getTouch(stage); //event.getTouch(this, TouchPhase.BEGAN);

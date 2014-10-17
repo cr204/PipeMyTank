@@ -11,10 +11,10 @@ package
 		[Embed(source="../assets/graphics/splash_screen.png")]
 		public static const splashScreen:Class;
 		
-		[Embed(source="../assets/graphics/bgWelcome.jpg")]
+		[Embed(source="../assets/graphics/1x/bgWelcome.jpg")]
 		public static const BgWelcome:Class;
 		
-		[Embed(source="../assets/graphics/map_bg.png")]
+		[Embed(source="../assets/graphics/1x/map_bg.png")]
 		public static const BgMap:Class;
 		
 //		[Embed(source="../assets/graphics/cell_bg.png")]
@@ -23,10 +23,10 @@ package
 		private static var gameTextures:Dictionary = new Dictionary();
 		private static var gameTextureAtlas:TextureAtlas;
 		
-		[Embed(source="../assets/graphics/Spritesheet.png")]
+		[Embed(source="../assets/graphics/1x/Spritesheet.png")]
 		public static const AtlasTexureGame:Class;
 		
-		[Embed(source="../assets/graphics/Spritesheet.xml", mimeType="application/octet-stream")]
+		[Embed(source="../assets/graphics/1x/Spritesheet.xml", mimeType="application/octet-stream")]
 		public static const AtlasXmlGame:Class;
 		
 		public static function getAtlas():TextureAtlas 

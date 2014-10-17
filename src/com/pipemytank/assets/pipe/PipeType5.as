@@ -64,11 +64,7 @@ package com.pipemytank.assets.pipe
 					}
 					break;
 			}
-			if(_doIt) {
-				_filled = true;
-				maskerTween = new TweenLite(0, 0, {delay:flowingSpeed, overwrite:false, onComplete:flowCompleted});
-				pipeMask.showMask(flowingSpeed);
-			}
+			super.startMasking(_doIt, flowingSpeed);
 			
 			
 		}

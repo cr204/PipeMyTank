@@ -1,5 +1,6 @@
 package com.pipemytank.assets.pipe
 {
+	import com.greensock.TweenLite;
 	import com.pipemytank.assets.PipeMask;
 	import com.pipemytank.events.FlowingBlockEvent;
 	
@@ -16,6 +17,7 @@ package com.pipemytank.assets.pipe
 		protected var _filling:Boolean = false;
 		protected var _filled:Boolean = false;
 		protected var pipeMask:PipeMask;
+		protected var maskerTween:TweenLite;
 		
 		public var pipeType:int;
 		public var rotatePos:int = 1;
@@ -122,6 +124,14 @@ package com.pipemytank.assets.pipe
 			//
 			trace("PipeBase.startFlowing().fuelIn_Side: " + fuelIn_Side);
 		}
+		
+		protected function startMasking(_doIt:Boolean, flowingSpeed:Number):void {
+			if(_doIt) {
+				_filled = true;
+				maskerTween = new TweenLite(0, 0, {delay:flowingSpeed, overwrite:false, onComplete:flowCompleted});
+				pipeMask.showMask(flowingSpeed);
+			}
+		}
 
 		
 		protected function flowCompleted():void {
@@ -195,6 +205,21 @@ package com.pipemytank.assets.pipe
 		public function get filled():Boolean {
 			return _filled;
 		}
+		
+		public function pauseFlowing():void {
+			if(maskerTween) maskerTween.pause();
+		}
+		
+		public function quickFill():void {
+			maskerTween.pause();
+			maskerTween = new TweenLite(0, 0, {delay:1, overwrite:false, onComplete:flowCompleted});
+			pipeMask.showMask(QUICK_SPEED);
+		}
+		
+		public function resumeFlowing():void {
+			if(maskerTween) maskerTween.play();
+		}
+		
 		
 	}
 }

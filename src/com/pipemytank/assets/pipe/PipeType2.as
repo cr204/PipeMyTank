@@ -4,7 +4,7 @@ package com.pipemytank.assets.pipe
 
 	public class PipeType2 extends PipeBase
 	{
-		private var maskerTween:TweenLite;
+		//private var maskerTween:TweenLite;
 		
 		public function PipeType2(n:int, p:int)
 		{
@@ -44,11 +44,13 @@ package com.pipemytank.assets.pipe
 					}
 					break;
 			}
-			if(_doIt) {
+			
+			super.startMasking(_doIt, flowingSpeed);
+/*			if(_doIt) {
 				_filled = true;
 				maskerTween = new TweenLite(0, 0, {delay:flowingSpeed, overwrite:false, onComplete:flowCompleted});
 				pipeMask.showMask(flowingSpeed);
-			}
+			}  */
 		}
 
 		

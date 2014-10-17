@@ -3,6 +3,7 @@ package com.pipemytank.gamestates
 	import com.greensock.TweenLite;
 	import com.pipemytank.assets.Block;
 	import com.pipemytank.assets.CustomTextField;
+	import com.pipemytank.assets.FuelTank;
 	import com.pipemytank.assets.ScoreAnimation;
 	import com.pipemytank.assets.WaitingTank;
 	import com.pipemytank.assets.windows.WindowBase;
@@ -19,7 +20,9 @@ package com.pipemytank.gamestates
 	
 	public class GameState5 extends GameState
 	{
+		private var FUEL_FILL_TIME:Number = 300;
 		private var flowingSpeed:Number = 4;
+		private var QUICK_SPEED:Number = .4;
 		private var parentObj:GameScene;
 		
 		public var USER_SCORE:Number;
@@ -29,7 +32,7 @@ package com.pipemytank.gamestates
 		private var btnPause:Button;
 		private var btnStart:Button;
 		private var btnSkip:Button;
-		private var fuelTank:Image;
+		private var fuelTank:FuelTank;
 		private var imgArrow:Image;
 		private var imgTank:Image;
 		private var tank1:WaitingTank;
@@ -92,10 +95,16 @@ package com.pipemytank.gamestates
 		
 		private function drawScreen():void {
 			
-			//bgCell = new Image(Assets.getTexture("BgCell"));
+			fuelTank = new FuelTank();
+			fuelTank.init(this);
+			fuelTank.x = 20;
+			fuelTank.y = 69;
+			this.addChild(fuelTank);
+			
+			
 			bgCell = new Image(GameScene.assets.getTexture("cell_bg"));
-			bgCell.x = 27;
-			bgCell.y = 15;
+			bgCell.x = 152;
+			bgCell.y = 17;
 			this.addChild(bgCell);
 			
 			btnPause = new Button(GameScene.assets.getTexture("btn_pause"));
@@ -113,11 +122,6 @@ package com.pipemytank.gamestates
 			btnSkip.y = 23;
 			btnSkip.visible = false;
 			this.addChild(btnSkip);
-			
-			fuelTank = new Image(GameScene.assets.getTexture("fuel_tank"));
-			fuelTank.x = 29;
-			fuelTank.y = 69;
-			this.addChild(fuelTank);
 			
 			tank1 = new WaitingTank();
 			tank1.x = 865;
@@ -205,6 +209,19 @@ package com.pipemytank.gamestates
 					
 				}
 			}
+			
+			startCountdown(); // temp. oct 17,2014
+		}
+		
+		private function startCountdown():void {
+			fuelTank.reset();
+			fuelTank.animationTime = FUEL_FILL_TIME;
+			startFuelTankerAnimation(); // temp. oct17,2014
+		}
+		
+		public function startFuelTankerAnimation():void {
+			//if(!tutorials.visible) fuelTanker.startAnimation();
+			fuelTank.startAnimation();  // temp. oct17,2014 
 		}
 		
 		public function dragBlock(block:Block):void {
@@ -268,7 +285,8 @@ package com.pipemytank.gamestates
 				case btnSkip:
 					break;
 				case btnStart:
-					startFlowing("block00", 1); 
+					//startFlowing("block00", 1);
+					startButtonPressedHandler();
 					break;
 				default:
 					//
@@ -277,6 +295,24 @@ package com.pipemytank.gamestates
 			
 		}
 		
+		private function startButtonPressedHandler():void {
+			//if(Settings.getInstance().sound) buttonClickSound.play();
+			for each(var fblock:Block in flowingBlocksArr) {
+				fblock.quickFill();
+			}
+			
+			flowingSpeed = QUICK_SPEED;
+			fuelTank.quickFill();
+			
+		}
+		
+		public function startFlowing0():void {
+			//if(channel2_started && channel.position==0) channel = bubble_sound.play(1, 99);
+			if(flowingBlockName=="block00") {
+				flowingBlockName = "block00";
+				startFlowing("block00", 1); 
+			}
+		}
 		
 		private function startFlowing(bName:String, bSide:int):void {
 			//var currBlock:Block = blockHolder.getChildByName("block00") as Block;
@@ -404,7 +440,6 @@ package com.pipemytank.gamestates
 		
 		private function showPauseWindow():void {
 			windowHolder.addChild(windowPause);
-			//showFaultWindow();
 		}
 		
 		public function showVictoryScreen():void {

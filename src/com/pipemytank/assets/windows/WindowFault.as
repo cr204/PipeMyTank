@@ -50,6 +50,8 @@ package com.pipemytank.assets.windows
 			trace(targetBtn.name);
 			switch(targetBtn.name) {
 				case "btnExit":
+					parentObj.removeCurrentWindow();
+					parentObj.returnPrevGameState();
 					break;
 				case "btnReplay":
 					break;
