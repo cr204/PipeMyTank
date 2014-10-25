@@ -17,6 +17,7 @@ package com.pipemytank.assets
 		private var _size:int = 20;
 		private var _width:Number = 70;
 		private var _height:Number = 25;
+		private var _textValue:String = "";
 		
 		public function CustomTextField()
 		{
@@ -37,6 +38,7 @@ package com.pipemytank.assets
 			//bmpFontTF.vAlign = "top";
 			bmpFontTF.x = 0;
 			bmpFontTF.y = 0;
+			if(_textValue.length>0) bmpFontTF.text = _textValue;
 			this.addChild(bmpFontTF);
 		}
 		
@@ -64,7 +66,10 @@ package com.pipemytank.assets
 		}
 		
 		public function setText(s:String):void {
-			bmpFontTF.text = s;
+			if(bmpFontTF) {
+				bmpFontTF.text = s;
+			}
+			_textValue = s;
 		}
 		
 		public function setWidth(n:Number):void {

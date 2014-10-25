@@ -116,7 +116,7 @@ package com.pipemytank.assets
 			if(maskerTween) maskerTween.pause();
 		}
 		
-		private function resumeGame():void {
+		public function resumeGame():void {
 			if(_countdownStarted) countTimer.start();
 			if(maskerTween) maskerTween.play();
 		}

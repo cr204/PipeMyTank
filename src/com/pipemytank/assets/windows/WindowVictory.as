@@ -18,6 +18,7 @@ package com.pipemytank.assets.windows
 		private var btnExit:Button;
 		private var btnReplay:Button;
 		private var btnNextLevel:Button;
+		private var _stars:int = 0;
 		
 		public function WindowVictory()
 		{
@@ -80,7 +81,7 @@ package com.pipemytank.assets.windows
 			btnNextLevel.y = 566;
 			this.addChild(btnNextLevel);
 			
-			setMedals(3);
+			//setMedals(3);
 		}
 		
 		override protected function onTriggerHandler(e:Event):void {
@@ -131,7 +132,8 @@ package com.pipemytank.assets.windows
 		}
 		
 		public function showStars(n:int):void {
-			
+			_stars = n;
+			setMedals(_stars); // temp oct20,2014
 		}
 		
 //		windowVictory.levelNumbers.setNumbers(levelNumbers.getNumbers);

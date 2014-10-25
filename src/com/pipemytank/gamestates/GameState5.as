@@ -20,7 +20,7 @@ package com.pipemytank.gamestates
 	
 	public class GameState5 extends GameState
 	{
-		private var FUEL_FILL_TIME:Number = 300;
+		private var FUEL_FILL_TIME:Number = 60;
 		private var flowingSpeed:Number = 4;
 		private var QUICK_SPEED:Number = .4;
 		private var parentObj:GameScene;
@@ -219,6 +219,24 @@ package com.pipemytank.gamestates
 			startFuelTankerAnimation(); // temp. oct17,2014
 		}
 		
+		public function pauseGame():void {
+			fuelTank.pauseGame();
+			//countdown.stop();
+			if(flowingBlock) flowingBlock.pauseGame();
+			for each(var fblock:Block in flowingBlocksArr) {
+				fblock.pauseGame();
+			}
+		}
+		
+		public function resumeGame():void {
+			fuelTank.resumeGame();
+			//if(countdown.currentFrame>1) countdown.play();
+			if(flowingBlock) flowingBlock.resumeGame();
+			for each(var fblock:Block in flowingBlocksArr) {
+				fblock.resumeGame();
+			}
+		}
+		
 		public function startFuelTankerAnimation():void {
 			//if(!tutorials.visible) fuelTanker.startAnimation();
 			fuelTank.startAnimation();  // temp. oct17,2014 
@@ -280,7 +298,7 @@ package com.pipemytank.gamestates
 			
 			switch(target) {
 				case btnPause:
-					showPauseWindow();
+					gamePauseHandler();
 					break;
 				case btnSkip:
 					break;
@@ -293,6 +311,12 @@ package com.pipemytank.gamestates
 					break;
 			}
 			
+		}
+		
+		private function gamePauseHandler():void {
+//			if(Settings.getInstance().sound) buttonClickSound.play();
+			showPauseWindow();
+			pauseGame();
 		}
 		
 		private function startButtonPressedHandler():void {

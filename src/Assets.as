@@ -29,6 +29,9 @@ package
 		[Embed(source="../assets/graphics/1x/Spritesheet.xml", mimeType="application/octet-stream")]
 		public static const AtlasXmlGame:Class;
 		
+		[Embed(source="../assets/game_levels.xml", mimeType="application/octet-stream")]
+		public static const GameLevelsXML:Class;
+		
 		public static function getAtlas():TextureAtlas 
 		{
 			if(gameTextureAtlas == null)

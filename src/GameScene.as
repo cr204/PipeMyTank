@@ -9,6 +9,11 @@ package
 	import com.pipemytank.gamestates.GameState3;
 	import com.pipemytank.gamestates.GameState4;
 	import com.pipemytank.gamestates.GameState5;
+	import com.pipemytank.utils.ProgressBar;
+	import com.pipemytank.utils.XMLData;
+	
+	import flash.net.URLLoader;
+	import flash.net.URLRequest;
 	
 	import fr.kouma.starling.utils.Stats;
 	
@@ -17,13 +22,12 @@ package
 	import starling.display.Image;
 	import starling.display.Sprite;
 	import starling.events.Event;
-	import starling.textures.Texture;
 	import starling.utils.AssetManager;
-	
-	import com.pipemytank.utils.ProgressBar;
 	
 	public class GameScene extends Sprite
 	{
+		private static const LEVELS_XML_PATH:String = "game_levels.xml";
+		
 		private var bg:Image;
 		private var splashScreen:Image;
 		private var btnBack:Button;
@@ -34,7 +38,11 @@ package
 		private var gameState4:GameState4;
 		private var gameState5:GameState5;
 		
+		public var xmlData:XMLData;
+		public var selectedFaction:Sprite;
+		
 		private var prevStateID:int = 0;
+		private var _levelsXMLLoaded:Boolean = false;
 		
 		private var mLoadingProgress:ProgressBar;
 		private static var sAssets:AssetManager;
@@ -93,6 +101,14 @@ package
 			bg = new Image(Assets.getTexture("BgWelcome"));
 			this.addChild(bg);
 			
+			
+			//xmlData = new XMLData(Assets.getXML
+			
+/*			var xmlLoader:URLLoader = new URLLoader();
+			xmlLoader.addEventListener(Event.COMPLETE, onLevelsXMLLoaded);
+			xmlLoader.load(new URLRequest(LEVELS_XML_PATH));  */
+			
+			
 			this.addEventListener(NavigationEvent.CHANGE_SCREEN, onChangeScreen);
 			
 			stateHolder = new Sprite();
@@ -119,6 +135,7 @@ package
 			
 			//this.addChild(new Stats());
 		}
+		
 		
 		private function onChangeScreen(e:NavigationEvent):void 
 		{
@@ -334,6 +351,22 @@ package
 		}
 		
 		public static function get assets():AssetManager { return sAssets; }
+		
+		private function onLevelsXMLLoaded(e:Event):void {
+			try {
+				trace("XML loaded succesfully!");
+				var target = e.target;
+				var mainData:XML = new XML( target.data );
+				xmlData = new XMLData(mainData);
+				_levelsXMLLoaded = true;
+			} catch(err:Error) {
+				trace(LEVELS_XML_PATH + " file loading Error:" + err.message);
+				_levelsXMLLoaded = true;
+				return;
+			}	 
+		}
+		
+		
 		
 	}
 }

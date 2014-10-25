@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<pipemytank>
+  <settings>
+	<bottomText>THIS IS DYNAMIC BOTTOM TEXT CONTROLLED VIA XML.   PLEASE GOTO GAME LEVELS XML AND EDIT BOTTOM TEXT.   SOME OTHER SAMPLE TEXT FOR BOTTOM TEXT LINE.  !</bottomText>
+  </settings>
+  <factions>
+	<faction name="ALLIES">
+		<location name="dday" time="00:30" xblocks="0" />
+		<location name="tunisia" time="01:00" xblocks="0" />
+		<location name="egypt" time="04:30" xblocks="0" />
+		<location name="ardennes" time="04:15" xblocks="1" />
+		<location name="berlin" time="04:00" xblocks="2" />
+		<location name="wolfenstein" time="03:45" xblocks="3" />
+		
+		<pipe name="curve" number="20" />
+		<pipe name="strightline" number="20" />
+		<pipe name="slowdown" number="10" />
+		<pipe name="twoover" number="5" />
+		<pipe name="threeway" number="5" />
+		<pipe name="fourway" number="0" />
+	</faction>
+	
+	<faction name="RED ARMY">
+		<location name="moscow" time="03:30" xblocks="4" />
+		<location name="stalingrad" time="03:15" xblocks="5" />
+		<location name="leningrad" time="03:00" xblocks="6" />
+		<location name="kursk" time="02:45" xblocks="7" />
+		<location name="berlin" time="02:30" xblocks="8" />
+		<location name="wolfenstein" time="02:15" xblocks="9" />
+	
+		<pipe name="curve" number="20" />
+		<pipe name="strightline" number="20" />
+		<pipe name="slowdown" number="10" />
+		<pipe name="twoover" number="5" />
+		<pipe name="threeway" number="5" />
+		<pipe name="fourway" number="0" />
+	</faction>
+	
+	<faction name="WIDERSTAND">
+		<location name="berlin" time="02:00" xblocks="10" />
+		<location name="tunisia" time="01:45" xblocks="12" />
+		<location name="kursk" time="01:25" xblocks="13" />
+		<location name="ardennes" time="01:25" xblocks="14" />
+		<location name="moscow" time="01:00" xblocks="15" />
+		<location name="dday" time="05:45" xblocks="20" />
+	
+		<pipe name="curve" number="10" />
+		<pipe name="strightline" number="15" />
+		<pipe name="slowdown" number="15" />
+		<pipe name="twoover" number="5" />
+		<pipe name="threeway" number="10" />
+		<pipe name="fourway" number="5" />
+	</faction>
+  </factions>
+  <xbugs>
+	<xbug blocks="11, 12, 22, 32, 42, 43, 44, 34, 35, 36, 46, 56, 66, 65, 64, 74, 84, 85, 86, 87, 88" />
+  </xbugs>
+</pipemytank>

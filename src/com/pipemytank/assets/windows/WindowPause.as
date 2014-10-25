@@ -53,6 +53,7 @@ package com.pipemytank.assets.windows
 			switch(targetBtn.name) {
 				case "btnContinue":
 					parentObj.removeCurrentWindow();
+					parentObj.resumeGame();
 					break;
 				case "btnRestart":
 					break;
