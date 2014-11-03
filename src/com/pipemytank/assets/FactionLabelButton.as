@@ -23,15 +23,15 @@ package com.pipemytank.assets
 		private function onAddedToStage(e:Event):void {
 			if(this.hasEventListener(Event.ADDED_TO_STAGE)) this.removeEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 			
-			caption1 = new Image(Assets.getAtlas().getTexture("allies_text"));
+			caption1 = new Image(GameScene.assets.getTexture("allies_text"));
 			caption1.x = 105;
 			caption1.y = 20;
 			
-			caption2 = new Image(Assets.getAtlas().getTexture("red_text"));
+			caption2 = new Image(GameScene.assets.getTexture("red_text"));
 			caption2.x = 105;
 			caption2.y = 20;
 			
-			caption3 = new Image(Assets.getAtlas().getTexture("wider_text"));
+			caption3 = new Image(GameScene.assets.getTexture("wider_text"));
 			caption3.x = 105;
 			caption3.y = 20;
 		}

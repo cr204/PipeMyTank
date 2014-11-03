@@ -8,11 +8,12 @@ package
 	import flash.events.Event;
 	import flash.filesystem.File;
 	import flash.geom.Rectangle;
+	import flash.net.URLLoader;
+	import flash.net.URLRequest;
 	import flash.system.Capabilities;
 	
 	import starling.core.Starling;
 	import starling.events.Event;
-	import starling.textures.Texture;
 	import starling.utils.AssetManager;
 	import starling.utils.RectangleUtil;
 	import starling.utils.ScaleMode;
@@ -33,7 +34,8 @@ package
 		
 		private var mStarling:Starling;
 		
-		var preloader:Bitmap;
+		private var preloader:Bitmap;
+		private var appDir:File;
 		
 		public function PipeMyTank()
 		{
@@ -63,7 +65,7 @@ package
 			// create the AssetManager, which handles all required assets for this resolution
 			
 			var scaleFactor:int = viewPort.width < 1025 ? 1 : 2; // midway between 1024 and 2048
-			var appDir:File = File.applicationDirectory;
+			appDir = File.applicationDirectory;
 			appDir = appDir.resolvePath(directPath); // Temporary solution! Need to work.
 			trace("appDir: " + appDir.url);
 			
@@ -95,6 +97,8 @@ package
 				appDir.resolvePath(formatString("assets/fonts/{0}x", scaleFactor)),
 				appDir.resolvePath(formatString("assets/graphics/{0}x", scaleFactor))
 			);
+			//assets.addXml(appDir.resolvePath("assets"));
+			//appDir.resolvePath("music.mp3")
 			
 			// While Stage3D is initializing, the screen will be blank. To avoid any flickering, 
 			// we display a startup image now and remove it below, when Starling is ready to go.
@@ -136,6 +140,7 @@ package
 				//var bgTexture:Texture = Texture.fromEmbeddedAsset(backgroundClass, false, false, scaleFactor); 
 				//game.start(bgTexture, assets);
 				game.start(assets);
+				game.setPath(appDir);
 				mStarling.start();
 			});
 			
@@ -149,6 +154,7 @@ package
 				flash.events.Event.DEACTIVATE, function (e:*):void { mStarling.stop(); });
 			
 		}
+
 		
 	}
 }

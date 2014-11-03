@@ -23,10 +23,10 @@ package com.pipemytank.assets
 		}
 		
 		public function createMask(nX:Number, nY:Number):void {
-			pipeMaskImage = new Image(Assets.getAtlas().getTexture("pipe_mask"));
+			pipeMaskImage = new Image(GameScene.assets.getTexture("pipe_mask"));
 			pipeMaskImage.x = initX = nX;
 			pipeMaskImage.y = initY = nY;
-			var blackPipeBitmap:Image = new Image(Assets.getAtlas().getTexture(getPipeType(pipeType, rotPosition)));
+			var blackPipeBitmap:Image = new Image(GameScene.assets.getTexture(getPipeType(pipeType, rotPosition)));
 			
 			// for masks with animation:
 			var maskedDisplayObject:PixelMaskDisplayObject = new PixelMaskDisplayObject();

@@ -25,7 +25,7 @@ package com.pipemytank.assets
 		private function onAddedToStage(e:Event):void {
 			this.removeEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 			
-			orangePipeImg = new Image(Assets.getAtlas().getTexture("pipe21_red"));
+			orangePipeImg = new Image(GameScene.assets.getTexture("pipe21_red"));
 			this.addChild(orangePipeImg);
 			
 			pipeMask = new PipeMask(2, 1);
@@ -34,7 +34,7 @@ package com.pipemytank.assets
 			this.addChild(pipeMask);
 			pipeMask.createMask(-80, 0);
 			
-			tankImg = new Image(Assets.getAtlas().getTexture(arrTanks[0]));
+			tankImg = new Image(GameScene.assets.getTexture(arrTanks[0]));
 			tankImg.x = 20;
 			this.addChild(tankImg);
 		}

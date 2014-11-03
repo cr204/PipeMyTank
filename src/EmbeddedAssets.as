@@ -6,7 +6,7 @@ package
 	import starling.textures.Texture;
 	import starling.textures.TextureAtlas;
 
-	public class Assets
+	public class EmbeddedAssets
 	{
 		[Embed(source="../assets/graphics/splash_screen.png")]
 		public static const splashScreen:Class;
@@ -20,7 +20,7 @@ package
 //		[Embed(source="../assets/graphics/cell_bg.png")]
 //		public static const BgCell:Class;
 		
-		private static var gameTextures:Dictionary = new Dictionary();
+/*		private static var gameTextures:Dictionary = new Dictionary();
 		private static var gameTextureAtlas:TextureAtlas;
 		
 		[Embed(source="../assets/graphics/1x/Spritesheet.png")]
@@ -29,8 +29,8 @@ package
 		[Embed(source="../assets/graphics/1x/Spritesheet.xml", mimeType="application/octet-stream")]
 		public static const AtlasXmlGame:Class;
 		
-		[Embed(source="../assets/game_levels.xml", mimeType="application/octet-stream")]
-		public static const GameLevelsXML:Class;
+		//[Embed(source="../assets/game_levels.xml", mimeType="application/octet-stream")]
+		//public static const GameLevelsXML:Class;
 		
 		public static function getAtlas():TextureAtlas 
 		{
@@ -47,11 +47,11 @@ package
 		{
 			if(gameTextures[name] == undefined) 
 			{
-				var bitmap:Bitmap = new Assets[name]();
+				var bitmap:Bitmap = new _Assets[name]();
 				gameTextures[name] = Texture.fromBitmap(bitmap);
 			}
 			return gameTextures[name];	
 		}
-			
+			*/
 	}
 }

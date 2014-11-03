@@ -2,6 +2,7 @@ package
 {
 	import com.greensock.TweenLite;
 	import com.greensock.easing.Expo;
+	import com.pipemytank.abstract.LevelDataObject;
 	import com.pipemytank.events.NavigationEvent;
 	import com.pipemytank.gamestates.GameState;
 	import com.pipemytank.gamestates.GameState1;
@@ -10,8 +11,11 @@ package
 	import com.pipemytank.gamestates.GameState4;
 	import com.pipemytank.gamestates.GameState5;
 	import com.pipemytank.utils.ProgressBar;
+	import com.pipemytank.utils.Settings;
 	import com.pipemytank.utils.XMLData;
 	
+	import flash.events.Event;
+	import flash.filesystem.File;
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
 	
@@ -26,7 +30,7 @@ package
 	
 	public class GameScene extends Sprite
 	{
-		private static const LEVELS_XML_PATH:String = "game_levels.xml";
+		private static const LEVELS_XML_PATH:String = "/assets/xml/game_levels.xml";
 		
 		private var bg:Image;
 		private var splashScreen:Image;
@@ -39,13 +43,18 @@ package
 		private var gameState5:GameState5;
 		
 		public var xmlData:XMLData;
-		public var selectedFaction:Sprite;
+/*		public var selectedFaction:Sprite;
+		public var selectedFactionName:String;
+		public var selectedLocationName:String;
+		public var selectedLocationStars:int = 0;
+		public var selectedLevelName:String;  */
 		
 		private var prevStateID:int = 0;
 		private var _levelsXMLLoaded:Boolean = false;
 		
 		private var mLoadingProgress:ProgressBar;
 		private static var sAssets:AssetManager;
+		private var appDir:File;
 		
 		public function GameScene()
 		{
@@ -84,35 +93,58 @@ package
 					{
 						mLoadingProgress.removeFromParent(true);
 						mLoadingProgress = null;
-						showWelcomeScreen();
+						init();
 					}, 0.15);
 			});
+			assets.enqueue(EmbeddedAssets);
+			
+		}
+		
+		public function setPath(_appDir:File):void {
+			appDir = _appDir;
+			loadGameXML();
+		}
+		
+		private function loadGameXML():void {
+			var xmlLoader:URLLoader = new URLLoader();
+			xmlLoader.addEventListener(flash.events.Event.COMPLETE, onLevelsXMLLoaded);
+			xmlLoader.load(new URLRequest(appDir.url + LEVELS_XML_PATH));
+		}
+		
+		private function onLevelsXMLLoaded(e:flash.events.Event):void {
+			try {
+			trace("Levels XML loaded succesfully!");
+				var mainData:XML = new XML( e.target.data );
+				xmlData = new XMLData(mainData);
+				_levelsXMLLoaded = true;
+			} catch(err:Error) {
+				trace(LEVELS_XML_PATH + " file loading Error:" + err.message);
+				_levelsXMLLoaded = true;
+			return;
+			}
+		}
+		
+		public function getXMLData():LevelDataObject {
+			var ret:LevelDataObject = xmlData.getLevelData();
+			return ret;
 		}
 		
 		
-		private function showWelcomeScreen():void {
+		
+		private function init():void {
 			trace("starling framework initialized!");
 			
-/*			splashScreen = new Image(Assets.getTexture("splashScreen"));
-			splashScreen.x = Math.ceil((stage.stageWidth - splashScreen.width) / 2);
-			splashScreen.y = Math.ceil((stage.stageHeight - splashScreen.height) / 2);
-			this.addChild(splashScreen);*/
-			
-			bg = new Image(Assets.getTexture("BgWelcome"));
+			bg = new Image(assets.getTexture("BgWelcome"));
 			this.addChild(bg);
-			
-			
-			//xmlData = new XMLData(Assets.getXML
-			
-/*			var xmlLoader:URLLoader = new URLLoader();
-			xmlLoader.addEventListener(Event.COMPLETE, onLevelsXMLLoaded);
-			xmlLoader.load(new URLRequest(LEVELS_XML_PATH));  */
-			
-			
+						
 			this.addEventListener(NavigationEvent.CHANGE_SCREEN, onChangeScreen);
 			
 			stateHolder = new Sprite();
 			this.addChild(stateHolder);
+			
+/*			selectedFactionName = new String();
+			selectedLocationName = new String();
+			selectedLevelName = new String(); */
 			
 			gameState1 = new GameState1();
 			gameState2 = new GameState2();
@@ -124,13 +156,13 @@ package
 			
 			switchGameState(gameState1);
 			 
-			btnBack = new Button(Assets.getAtlas().getTexture("btn_back"));
+			btnBack = new Button(assets.getTexture("btn_back"));
 			btnBack.x = 30;
 			btnBack.y = 707;
 			btnBack.width = 150;
 			btnBack.height = 47;
 			btnBack.visible = false;
-			btnBack.addEventListener(Event.TRIGGERED, onBackButtonClicked);
+			btnBack.addEventListener(starling.events.Event.TRIGGERED, onBackButtonClicked);
 			this.addChild(btnBack);
 			
 			//this.addChild(new Stats());
@@ -161,30 +193,6 @@ package
 					trace("GS.onChangeScreen: default");
 					break;
 			}
-		}
-		
-		private function switchGameStateBack():void {
-			//trace("switchGameStateBack.prevStateID: " + prevStateID);
-			switch(prevStateID) {
-				case 1:
-					trace("1");
-					break;
-				case 2:
-					switchGameState(gameState1);
-					btnBack.visible = false;
-					break;
-				case 3:
-					switchGameState(gameState2);
-					break;
-				case 4:
-					switchGameState(gameState3);
-					break;
-				case 5:
-					switchGameState(gameState4);
-					btnBack.visible = true;
-					break;
-			}
-				
 		}
 		
 		
@@ -346,26 +354,48 @@ package
 			
 		}
 		
-		private function onBackButtonClicked(e:Event):void {
+		private function switchGameStateBack():void {
+			//trace("switchGameStateBack.prevStateID: " + prevStateID);
+			switch(prevStateID) {
+				case 1:
+					trace("1");
+					break;
+				case 2:
+					switchGameState(gameState1);
+					btnBack.visible = false;
+					break;
+				case 3:
+					switchGameState(gameState2);
+					break;
+				case 4:
+					switchGameState(gameState3);
+					break;
+				case 5:
+					switchGameState(gameState4);
+					btnBack.visible = true;
+					break;
+			}
+			
+		}
+		
+		private function onBackButtonClicked(e:starling.events.Event):void {
 			this.dispatchEvent(new NavigationEvent(NavigationEvent.CHANGE_SCREEN, {id: "back"}, true));
 		}
 		
-		public static function get assets():AssetManager { return sAssets; }
-		
-		private function onLevelsXMLLoaded(e:Event):void {
-			try {
-				trace("XML loaded succesfully!");
-				var target = e.target;
-				var mainData:XML = new XML( target.data );
-				xmlData = new XMLData(mainData);
-				_levelsXMLLoaded = true;
-			} catch(err:Error) {
-				trace(LEVELS_XML_PATH + " file loading Error:" + err.message);
-				_levelsXMLLoaded = true;
-				return;
-			}	 
+		public function unlockNextMap():void {
+			if(Settings.getInstance().selectedLocationName.slice(8)=="6") {
+				trace("unlockNextMap()"); //.selectedLocationName: " + selectedLocationName.slice(8));
+				switchGameState(gameState2);
+			} else switchGameState(gameState3);
 		}
 		
+		
+		
+		
+		
+		
+		
+		public static function get assets():AssetManager { return sAssets; }
 		
 		
 	}

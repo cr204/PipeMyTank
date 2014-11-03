@@ -61,6 +61,14 @@ package com.pipemytank.assets
 			_fontName = fFace;
 		}
 		
+		public function textAlign(alg:String):void {
+			bmpFontTF.hAlign = alg.toString();
+		}
+		
+		public function setBorder(b:Boolean):void {
+			bmpFontTF.border = b;
+		}
+		
 		public function setColor(c:uint):void {
 			_color = c;
 		}

@@ -1,10 +1,12 @@
 package com.pipemytank.gamestates
 {
 	import com.greensock.TweenLite;
+	import com.pipemytank.abstract.LevelDataObject;
 	import com.pipemytank.assets.Block;
 	import com.pipemytank.assets.CustomTextField;
 	import com.pipemytank.assets.FuelTank;
 	import com.pipemytank.assets.ScoreAnimation;
+	import com.pipemytank.assets.ScreenCountdown;
 	import com.pipemytank.assets.WaitingTank;
 	import com.pipemytank.assets.windows.WindowBase;
 	import com.pipemytank.assets.windows.WindowFault;
@@ -49,6 +51,7 @@ package com.pipemytank.gamestates
 		private var windowFault:WindowFault;
 		private var windowPause:WindowPause;
 		private var windowVictory:WindowVictory;
+		private var screenCountdown:ScreenCountdown;
 		
 		public var _gameOver:Boolean = false;
 		
@@ -61,6 +64,7 @@ package com.pipemytank.gamestates
 		
 		private var dynTxtScore:CustomTextField;
 		private var dynTxtHighScore:CustomTextField;
+		private var levelData:LevelDataObject;
 		
 		
 		public function GameState5()
@@ -89,8 +93,11 @@ package com.pipemytank.gamestates
 		}
 		
 		private function onAddedToStage(e:Event):void {
+			trace("GS5.onAddedToStage()");
 			if(!_init) drawScreen();
 			this.addEventListener(Event.TRIGGERED, onTriggerHandler);
+			levelData = parentObj.getXMLData();
+			FUEL_FILL_TIME = levelData.time;
 		}
 		
 		private function drawScreen():void {
@@ -185,10 +192,10 @@ package com.pipemytank.gamestates
 			windowHolder.x = 0;
 			windowHolder.y = 0;
 			this.addChild(windowHolder);
-			
-			createBlocks();
-			
+
 			initWindows();
+
+			createBlocks();
 			
 			_init = true;
 		}
@@ -210,10 +217,16 @@ package com.pipemytank.gamestates
 				}
 			}
 			
-			startCountdown(); // temp. oct 17,2014
+			showCountdown();
 		}
 		
-		private function startCountdown():void {
+		private function showCountdown():void {
+			windowHolder.addChild(screenCountdown);
+			screenCountdown.startCoundown();
+		}
+		
+		public function startCountdown():void {
+			windowHolder.removeChild(screenCountdown);
 			fuelTank.reset();
 			fuelTank.animationTime = FUEL_FILL_TIME;
 			startFuelTankerAnimation(); // temp. oct17,2014
@@ -445,6 +458,9 @@ package com.pipemytank.gamestates
 			
 			windowVictory = new WindowVictory();
 			windowVictory.init(this);
+			
+			screenCountdown = new ScreenCountdown();
+			screenCountdown.init(this);
 		}
 		
 		public function removeCurrentWindow():void {

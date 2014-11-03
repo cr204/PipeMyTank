@@ -29,12 +29,12 @@ package com.pipemytank.assets
 /*			iconBg = new Image(Assets.getAtlas().getTexture("level_icon"));
 			this.addChild(iconBg);*/
 			
-			numberBitmap = new Image(Assets.getAtlas().getTexture("level_number" + levelNumber.toString()));
+			numberBitmap = new Image(GameScene.assets.getTexture("level_number" + levelNumber.toString()));
 			numberBitmap.x = 18;
 			numberBitmap.y = 12;
 			this.addChild(numberBitmap);
 			
-			lockBitmap = new Image(Assets.getAtlas().getTexture("level_lock"));
+			lockBitmap = new Image(GameScene.assets.getTexture("level_lock"));
 			lockBitmap.x = 20;
 			lockBitmap.y = 14;
 			this.addChild(lockBitmap);
@@ -47,7 +47,7 @@ package com.pipemytank.assets
 		}
 		
 		public function setStars(n:int):void {
-			var star:Image = new Image(Assets.getAtlas().getTexture("level_medal"));
+			var star:Image = new Image(GameScene.assets.getTexture("level_medal"));
 			star.x = 24;
 			star.y = 21;
 			this.addChild(star);

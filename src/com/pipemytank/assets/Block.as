@@ -90,7 +90,7 @@ package com.pipemytank.assets
 			pipe.y = 39;			
 			this.addChild(pipe);
 			
-			cover = new Image(Assets.getAtlas().getTexture("block_allies"));
+			cover = new Image(GameScene.assets.getTexture("block_allies"));
 			cover.x = 39;
 			cover.y = 39;
 			cover.pivotX = cover.width * .5;

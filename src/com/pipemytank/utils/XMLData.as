@@ -8,13 +8,14 @@
 		
 		public function XMLData(xml:XML) {
 			mainXMLData = xml;
+			trace(xml);
 		}
 		
-		public function getLevelData(s1:*, s2:String):LevelDataObject {
+		public function getLevelData():LevelDataObject {
 			var retObj:LevelDataObject = new LevelDataObject();
 			
-			facXML = getXMLByFactionName(s1.factionName);
-			var locXML:Object = getLocationData(getLocationName(s2));
+			facXML = getXMLByFactionName(Settings.getInstance().selectedFactionName);
+			var locXML:Object = getLocationData(getLocationName(Settings.getInstance().selectedLocationName));
 			
 			retObj.levelName = locXML.lname;
 			retObj.time = convertToSeconds(locXML.ltime);

@@ -29,7 +29,7 @@ package com.pipemytank.assets.pipe
 			pipeType = _pipeType;
 			rotatePos = _rotPos;
 			
-			pipeBitmap = new Image(Assets.getAtlas().getTexture(getPipeType(pipeType, _rotPos)));
+			pipeBitmap = new Image(GameScene.assets.getTexture(getPipeType(pipeType, _rotPos)));
 			pipeBitmap.pivotX = pipeBitmap.width * .5;
 			pipeBitmap.pivotY = pipeBitmap.height * .5;
 			this.addChild(pipeBitmap);
@@ -73,7 +73,7 @@ package com.pipemytank.assets.pipe
 		
 		public function updatePipe(pType:int, rotPos:int=0):void {
 			removeChild(pipeBitmap);
-			pipeBitmap = new Image(Assets.getAtlas().getTexture(getPipeType(pType, rotPos)));
+			pipeBitmap = new Image(GameScene.assets.getTexture(getPipeType(pType, rotPos)));
 			pipeBitmap.pivotX = pipeBitmap.width * .5;
 			pipeBitmap.pivotY = pipeBitmap.height * .5;
 			this.addChild(pipeBitmap);
@@ -189,7 +189,7 @@ package com.pipemytank.assets.pipe
 		
 		private function updatePipeTexture():void{
 			removeChild(pipeBitmap);
-			pipeBitmap = new Image(Assets.getAtlas().getTexture("pipe" + pipeType.toString() + rotatePos.toString() + "_red"));
+			pipeBitmap = new Image(GameScene.assets.getTexture("pipe" + pipeType.toString() + rotatePos.toString() + "_red"));
 			pipeBitmap.pivotX = pipeBitmap.width * .5;
 			pipeBitmap.pivotY = pipeBitmap.height * .5;
 			this.addChild(pipeBitmap);

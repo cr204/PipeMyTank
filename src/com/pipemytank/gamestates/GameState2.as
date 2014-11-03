@@ -2,9 +2,11 @@ package com.pipemytank.gamestates
 {
 	import com.greensock.TweenLite;
 	import com.greensock.easing.Expo;
-	import com.pipemytank.assets.FactionIcons;
+	import com.pipemytank.assets.FactionIcon;
+	import com.pipemytank.assets.FactionIconsManager;
 	import com.pipemytank.assets.FactionLabelButton;
 	import com.pipemytank.events.NavigationEvent;
+	import com.pipemytank.utils.Settings;
 	
 	import starling.display.Button;
 	import starling.display.DisplayObject;
@@ -15,7 +17,7 @@ package com.pipemytank.gamestates
 	{
 		private static var _init:Boolean = false;
 		private var graphItem1:Image;
-		private var factionIcons:FactionIcons;
+		private var factionIcons:FactionIconsManager;
 		private var factionLabel:FactionLabelButton;
 		private var leftArrow:Button;
 		private var rightArrow:Button;
@@ -47,29 +49,29 @@ package com.pipemytank.gamestates
 		private function drawScreen():void {
 			trace("gamestate2 drawScreen()");
 			
-			graphItem1 = new Image(Assets.getAtlas().getTexture("choose_your_faction"));
+			graphItem1 = new Image(GameScene.assets.getTexture("choose_your_faction"));
 			graphItem1.x = 202;
 			graphItem1.y = 23;
 			this.addChild(graphItem1);
 			
-			factionIcons = new FactionIcons();
+			factionIcons = new FactionIconsManager();
 			factionIcons.x = 271;
 			factionIcons.y = 111;
 			this.addChild(factionIcons);
 			
-			factionLabel = new FactionLabelButton(Assets.getAtlas().getTexture("faction_title_bg"));
+			factionLabel = new FactionLabelButton(GameScene.assets.getTexture("faction_title_bg"));
 			factionLabel.name = "fLabel";
 			factionLabel.x = 270;
 			factionLabel.y = 606;
 			this.addChild(factionLabel);
 			
-			leftArrow = new Button(Assets.getAtlas().getTexture("left_arrow"));
+			leftArrow = new Button(GameScene.assets.getTexture("left_arrow"));
 			leftArrow.name = "leftArr";
 			leftArrow.x = 208;
 			leftArrow.y = 625;
 			this.addChild(leftArrow);
 			
-			rightArrow = new Button(Assets.getAtlas().getTexture("right_arrow"));
+			rightArrow = new Button(GameScene.assets.getTexture("right_arrow"));
 			rightArrow.name = "rightArr";
 			rightArrow.x = 764;
 			rightArrow.y = 625;
@@ -85,7 +87,7 @@ package com.pipemytank.gamestates
 			var target:DisplayObject = e.target as DisplayObject;
 			switch(target.name) {
 				case "fLabel":
-					factionSelected();
+					factionLabelSelected();
 					break;
 				case "leftArr":
 					slideToRight();
@@ -94,25 +96,27 @@ package com.pipemytank.gamestates
 					slideToLeft();
 					break;
 				default:
-					iconsTriggered(target.name);
+					iconsTriggered(e.target as FactionIcon);
 					break;
 			}
 			
 		}
 		
 		
-		private function iconsTriggered(iconName:String):void {
+		private function iconsTriggered(icon:FactionIcon):void {
+			trace("GS2.iconsTriggered: " + icon);
 			switch(currPos) {
 				case 271:
-					if(iconName=="faction1") factionSelected() else slideToLeft();
+					if(icon.name=="faction1") factionSelected("ALLIES") else slideToLeft();
 					break;
 				case -348:
-					if(iconName=="faction1") slideToRight();
-					if(iconName=="faction2") factionSelected();
-					if(iconName=="faction3") slideToLeft();
+					if(icon.name=="faction1") slideToRight();
+					if(icon.name=="faction2" && !icon.locked) factionSelected("RED ARMY");
+					if(icon.name=="faction3") slideToLeft();
 					break;
 				case -967:
-					if(iconName=="faction3") factionSelected() else slideToRight();
+					if(icon.name=="faction2") slideToRight();
+					if(icon.name=="faction3" && !icon.locked) factionSelected("WIDERSTAND");
 					break;
 			}
 		}
@@ -123,7 +127,6 @@ package com.pipemytank.gamestates
 				factionIcons.x = currPos;
 				currPos -= 619;
 				TweenLite.to(factionIcons, .5, {x:nextXPos, overwrite:false, ease:Expo.easeOut});
-				//captions.prevFrame();
 			}
 			checkButtons();
 		}
@@ -134,7 +137,6 @@ package com.pipemytank.gamestates
 				factionIcons.x = currPos;
 				currPos += 619;
 				TweenLite.to(factionIcons, .5, {x:nextXPos, overwrite:false, ease:Expo.easeOut});
-				//captions.prevFrame();
 			}
 			checkButtons();
 		}
@@ -155,14 +157,24 @@ package com.pipemytank.gamestates
 			}
 		}
 
+		private function factionLabelSelected():void {
+			switch(currPos) {
+				case 271:
+					factionSelected("ALLIES");
+					break;
+				case -348:
+					if(!factionIcons.factionLocked("faction2")) factionSelected("RED ARMY");
+					break;
+				case -967:
+					if(!factionIcons.factionLocked("faction3")) factionSelected("WIDERSTAND");
+					break;
+			}
+		}
 		
-		
-		private function factionSelected():void {
+		private function factionSelected(s:String):void {
 			trace("Faction selected!");
-//			var bntClicked:Button = e.target as Button;
-//			if((e.target as Button) == btnPlay) {
-				this.dispatchEvent(new NavigationEvent(NavigationEvent.CHANGE_SCREEN, {id: "factionSelected"}, true));
-//			}
+			Settings.getInstance().selectedFactionName = s
+			this.dispatchEvent(new NavigationEvent(NavigationEvent.CHANGE_SCREEN, {id: "factionSelected"}, true));
 		}
 		
 	}

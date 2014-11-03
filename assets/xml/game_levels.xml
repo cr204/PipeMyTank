@@ -5,7 +5,7 @@
   </settings>
   <factions>
 	<faction name="ALLIES">
-		<location name="dday" time="00:30" xblocks="0" />
+		<location name="dday" time="00:45" xblocks="0" />
 		<location name="tunisia" time="01:00" xblocks="0" />
 		<location name="egypt" time="04:30" xblocks="0" />
 		<location name="ardennes" time="04:15" xblocks="1" />
